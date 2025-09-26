@@ -1,19 +1,18 @@
 /* src\styles\buttons.css */
 .btn {
-  padding: 0 1rem;
+  padding: 0.5rem 2rem;
   border-radius: 0.35rem;
   font-family: 'Roboto Condensed', sans-serif;
   text-transform: uppercase;
-  height: 40px;
   line-height: 40px;
   font-size: 1.1rem;
-  font-weight: 300;
+  font-weight: 400;
   cursor: pointer;
 }
 .btn:disabled {
-  background-color: var(--grey-1);
-  color: var(--grey-b);
-  border: 1px solid var(--grey-b);
+  background-color: var(--grey-70);
+  color: var(--grey-50);
+  border: 1px solid var(--grey-50);
   cursor: not-allowed;
 }
 .btn .icon {
@@ -23,182 +22,59 @@
   height: 28px;
   line-height: 24px;
 }
-.btn:disabled .icon {
-  background-color: var(--grey-1);
-  color: var(--grey-3);
-}
 .btn.green {
-  background-color: var(--green-3);
-  border: 1px solid var(--green-2);
-  color: var(--green-1);
-  transition: background-color 0.3s, color 0.3s;
-}
-.btn.green .icon {
-  background-color: var(--green-3);
-  color: var(--green-1);
-  transition: background-color 0.3s, color 0.3s;
+  background-color: var(--tiffany-90);
+  border: 1px solid var(--tiffany-20);
+  color: var(--tiffany-20);
+  transition: background-color 0.3s;
 }
 .btn.green:hover {
-  background-color: var(--green-2);
-  color: var(--grey-1);
+  background-color: var(--tiffany-50);
 }
-.btn.green:hover .icon {
-  background-color: var(--green-2);
-  color: var(--grey-1);
+.btn.blue {
+  border: 1px solid var(--winkle-20);
+  color: var(--winkle-20);
+  transition: background-color 0.3s;
+}
+.btn.blue:hover {
+  background-color: var(--winkle-80);
+}
+.btn.pink {
+  background-color: var(--red-50);
+  color: var(--red-20);
+  border: 1px solid var(--red-20);
+  transition: background-color 0.3s;
+}
+.btn.pink:hover {
+  background-color: var(--red-80);
 }
 .btn.grey {
-  background-color: var(--grey-3);
-  border: 1px solid var(--grey-b);
-  color: var(--grey-4);
-  transition: background-color 0.3s, color 0.3s;
-}
-.btn.grey .icon {
-  background-color: var(--grey-3);
-  color: var(--grey-4);
+  border: 1px solid var(--grey-30);
+  color: var(--grey-80);
+  background-color: var(--grey-30);
   transition: background-color 0.3s, color 0.3s;
 }
 .btn.grey:hover {
-  background-color: var(--grey-4);
-  color: var(--grey-1);
+  background-color: var(--grey-70);
+  color: var(--winkle-20);
 }
-.btn.grey:hover .icon {
-  background-color: var(--grey-4);
-  color: var(--grey-1);
-}
-.btn.red {
-  background-color: var(--red-3);
-  border: 1px solid var(--red-2);
-  color: var(--red-1);
+.btn.winkle {
+  background-color: var(--winkle-40);
+  color: var(--winkle-90);
+  border: 1px solid var(--winkle-40);
   transition: background-color 0.3s, color 0.3s;
 }
-.btn.red .icon {
-  background-color: var(--red-3);
-  color: var(--red-1);
+.btn.winkle:hover {
+  background-color: var(--winkle-90);
+  color: var(--winkle-40);
+}
+.btn.tiffany {
+  background-color: var(--tiffany-20);
+  color: var(--tiffany-80);
+  border: 1px solid var(--tiffany-20);
   transition: background-color 0.3s, color 0.3s;
 }
-.btn.red:hover {
-  background-color: var(--red-1);
-  color: var(--red-3);
-}
-.btn.red:hover .icon {
-  background-color: var(--red-1);
-  color: var(--red-3);
-}
-/*  */
-.btn.accent {
-  background-color: var(--accent);
-  border: 1px solid var(--pink);
-  color: var(--light);
-  transition: background-color 0.3s, color 0.3s;
-}
-.btn.accent .icon {
-  background-color: var(--accent);
-  color: var(--light);
-  transition: background-color 0.3s, color 0.3s;
-}
-.btn.accent:hover {
-  background-color: var(--pink);
-  border: 1px solid var(--border);
-  color: var(--title);
-}
-.btn.accent:hover .icon {
-  background-color: var(--pink);
-  color: var(--title);
-}
-.btn.clear {
-  background-color: transparent;
-  border: 1px solid var(--title);
-  color: var(--title);
-}
-.btn.clear .icon {
-  background-color: transparent;
-  color: var(--title);
-}
-.btn.clear:hover {
-  background-color: var(--title);
-  color: var(--back);
-}
-.btn.clear:hover .icon {
-  background-color: var(--title);
-  color: var(--back);
-}
-.btn.blue {
-  background-color: var(--border);
-  border: 1px solid var(--border);
-  color: var(--back);
-}
-.btn.blue .icon {
-  background-color: var(--border);
-  color: var(--back);
-}
-.btn.blue:hover {
-  background-color: var(--title);
-  color: var(--light);
-}
-.btn.blue:hover .icon {
-  background-color: var(--title);
-  color: var(--light);
-}
-.btn-side {
-  padding: 0 1rem;
-  font-family: 'Roboto Condensed', sans-serif;
-  text-transform: uppercase;
-  height: 64px;
-  line-height: 64px;
-  font-size: 1.1rem;
-  font-weight: 400;
-  cursor: pointer;
-  width: 100%;
-  background: var(--text);
-  color: var(--pink);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.btn-side .icon {
-  vertical-align: middle;
-  margin-right: 0.5rem;
-  font-size: 24px;
-  height: 68px;
-  line-height: 64px;
-  color: var(--pink);
-}
-.btn-side:hover {
-  background: var(--border);
-  color: var(--light);
-  transform: translateY(-4px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-.btn-side:hover .icon {
-  color: var(--light);
-}
-.btn-menu {
-  font-family: 'Roboto Condensed', sans-serif;
-  text-transform: uppercase;
-  margin: 0.1rem 0;
-  height: 60px;
-  line-height: 60px;
-  font-size: 1rem;
-  font-weight: 400;
-  text-align: center;
-  cursor: pointer;
-  width: 100%;
-  background: var(--text);
-  color: var(--pink);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.btn-menu .icon {
-  vertical-align: middle;
-  margin-right: 0.5rem;
-  font-size: 20px;
-  height: 64px;
-  line-height: 60px;
-  color: var(--pink);
-}
-.btn-menu:hover {
-  background: var(--border);
-  color: var(--light);
-  transform: translateY(-4px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-.btn-menu:hover .icon {
-  color: var(--light);
+.btn.tiffany:hover {
+  background-color: var(--tiffany-50);
+  color: var(--tiffany-20);
 }

@@ -1,4 +1,4 @@
-//src/stores/user.js
+//src/stores/userStore.js
 import { defineStore } from 'pinia';
 import { onAuthStateChanged } from 'firebase/auth';
 import {

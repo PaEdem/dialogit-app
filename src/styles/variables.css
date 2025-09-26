@@ -1,0 +1,37 @@
+/* //src/styles/variables.css */
+:root {
+  /* COLORS */
+  /* GREY */
+  --grey-10: hsl(210, 20%, 10%);
+  --grey-30: hsl(210, 20%, 30%);
+  --grey-50: hsl(210, 20%, 50%); /* disabled button, sidebar bg - color, border */
+  --grey-60: hsl(210, 20%, 60%);
+  --grey-70: hsl(210, 20%, 70%); /* disabled button - background */
+  --grey-80: hsl(210, 20%, 80%);
+  --grey-90: hsl(210, 20%, 90%);
+  --grey-95: hsl(210, 20%, 95%);
+  /* RED */
+  --red-20: hsl(0, 60%, 20%);
+  --red-50: hsl(0, 60%, 50%);
+  --red-80: hsl(0, 60%, 80%); /* body - background */
+  /* GREEN */
+  --tiffany-20: hsl(180, 40%, 20%); /* text color - title, subtitle, description */
+  --tiffany-50: hsl(180, 40%, 50%);
+  --tiffany-80: hsl(180, 40%, 80%);
+  --tiffany-90: hsl(180, 40%, 90%);
+  /* BLUE */
+  --winkle-10: hsl(240, 50%, 10%);
+  --winkle-20: hsl(240, 50%, 20%); /* text color - title, subtitle, description */
+  --winkle-30: hsl(240, 50%, 30%); /* text color - description */
+  --winkle-40: hsl(240, 50%, 40%);
+  --winkle-60: hsl(240, 50%, 60%);
+  --winkle-80: hsl(240, 50%, 80%);
+  --winkle-90: hsl(240, 50%, 90%);
+  /* TEXT */
+  --head: 2.5rem;
+  --title: 2rem;
+  --subtitle: 1.5rem;
+  --text: 1.25rem;
+  --subtext: 1.05rem;
+  --description: 0.8rem;
+}

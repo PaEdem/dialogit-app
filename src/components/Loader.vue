@@ -51,7 +51,7 @@
   width: 10px;
   height: 50px;
   border-radius: 10px;
-  background-color: var(--accent);
+  background-color: var(--tiffany-50);
 }
 .ml-loader div:nth-child(1) {
   transform: rotate(0);

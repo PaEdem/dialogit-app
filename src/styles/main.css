@@ -12,10 +12,10 @@ html,
 body {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
-  font-family: 'Open Sans', 'Roboto', 'Segoe UI', sans-serif;
+  font-family: 'Roboto Condensed', 'Open Sans', 'Roboto', 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -24,26 +24,72 @@ body {
   height: 100%;
   width: 100%;
 }
-h1.heading {
-  font-size: 2rem;
-  line-height: 100%;
-  color: var(--heading);
-  margin: 2rem 0 2rem 0;
+.title {
+  font-size: var(--head);
+  line-height: 3rem;
+  letter-spacing: 3px;
+  font-weight: 700;
+  color: var(--winkle-20);
 }
-h2.title {
-  font-size: 1.5rem;
-  line-height: 100%;
-  color: var(--heading);
-  margin: 0.75rem 0 1.5rem;
+.subtitle {
+  letter-spacing: 3px;
+  font-size: var(--subtitle);
+  text-transform: uppercase;
+  color: var(--winkle-20);
+  font-weight: 700;
 }
-h3.title {
-  font-size: 1.2rem;
-  line-height: 100%;
-  font-weight: 400;
-  color: var(--title);
-  margin: 0.5rem 0;
+.text {
+  font-style: italic;
+  font-size: var(--text);
+  line-height: 2rem;
+  color: var(--winkle-30);
 }
-.dialog-view {
+.layout {
+  display: flex;
+  gap: 1rem;
+  height: 100vh;
+  padding: 1rem;
+}
+.col-c-c {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar {
+  flex: 0 1 20%;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: var(--grey-50);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+.full {
+  width: 100%;
+}
+.jc-sp-b {
+  justify-content: space-between;
+}
+.ta-c {
+  text-align: center;
+}
+.grow {
+  flex-grow: 1;
+}
+.content {
+  flex: 1;
+  overflow-y: auto;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  background-color: var(--grey-90);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+.m-0 {
+  margin: 0 !important;
+}
+/* +++++++++++++++++++++++++++++++ */
+/* .dialog-view {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -52,18 +98,9 @@ h3.title {
   height: 90vh;
   margin: 0 auto;
   margin-top: 5vh;
-}
+} */
 .level-view {
   width: 95%;
-}
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  background: var(--subtitle);
-  border-radius: 0.5rem;
-  padding: 2rem 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 .level-sidebar {
   width: 15%;
@@ -96,24 +133,4 @@ h3.title {
 .scroll-container {
   max-height: 100%;
   overflow-y: auto;
-}
-.grow {
-  flex-grow: 1;
-}
-/* -------------------- СТИЛИ ДЛЯ ПЛАНШЕТОВ И ДЕСКТОПОВ -------------------- */
-@media (min-width: 960px) {
-  h1.heading {
-    font-size: 3rem;
-    line-height: 100%;
-    color: var(--heading);
-    margin: 2rem 0 3rem 0;
-  }
-  h2.title {
-    font-size: 2rem;
-    margin: 1rem 0;
-  }
-  h3.title {
-    font-size: 1.5rem;
-    margin: 0.75rem 0;
-  }
 }
