@@ -89,16 +89,6 @@ body {
   margin: 0 !important;
 }
 /* +++++++++++++++++++++++++++++++ */
-/* .dialog-view {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  width: 80%;
-  height: 90vh;
-  margin: 0 auto;
-  margin-top: 5vh;
-} */
 .level-view {
   width: 95%;
 }
@@ -129,8 +119,4 @@ body {
   color: var(--back);
   margin: 0 0.5rem;
   flex-grow: 1;
-}
-.scroll-container {
-  max-height: 100%;
-  overflow-y: auto;
 }

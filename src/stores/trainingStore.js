@@ -1,5 +1,6 @@
 // src/stores/trainingStore.js
 import { defineStore } from 'pinia';
+import { marked } from 'marked';
 import { useDialogStore } from './dialogStore';
 import { useUiStore } from './uiStore';
 import { fetchGeminiResponse } from '../services/geminiService'; // Наш новый сервис
@@ -153,23 +154,25 @@ export const useTrainingStore = defineStore('training', {
       }
     },
 
-    getPromptForNewDialog(params) {
-      const { topic, level, replicas, words } = params;
-      return `Create a coherent short dialogue in Finnish on the topic of "${topic}", with a parallel Russian translation for each line. The Finnish dialogue should be at the language proficiency level ${level}, using simple structures and vocabulary appropriate for that level. The entire dialogue must consist of exactly ${replicas} replicas (lines spoken by alternating speakers, like Person A and Person B). Incorporate all the following Finnish words naturally into the dialogue: ${words}.
-      
-      For each Finnish replica, you must also generate three incorrect but plausible Russian translations. These incorrect options should be plausible distractors for a language learner, for example by using words that sound similar but have different meanings, incorrect grammar, or a contextually wrong translation.
+    async fetchDialogAnalysis() {
+      const dialogStore = useDialogStore();
+      const dialog = dialogStore.currentDialog;
+      if (!dialog) return;
 
-      Output the response strictly in JSON format with three keys: "fin", "rus", and "options". Do not include any additional text, explanations, or keys in the JSON.
-      
-      Example output format:
-      {
-        "fin": ["Moi.", "Mitä kuuluu?"],
-        "rus": ["Привет.", "Как дела?"],
-        "options": [
-          ["Мой.", "Пока.", "Доброе утро."],
-          ["Что включено?", "Как твое имя?", "Куда ты идешь?"]
-        ]
-      }`;
+      this.isLoading = true;
+      this.geminiResult = '';
+      try {
+        const fullDialogText = dialog.fin.join('\n');
+        const prompt = this.getPromptInfo(fullDialogText, dialog.level);
+        const rawResult = await fetchGeminiResponse(prompt);
+        // Сразу форматируем в HTML здесь, в сторе
+        this.geminiResult = marked.parse(rawResult);
+      } catch (error) {
+        console.error('Ошибка получения анализа диалога:', error);
+        this.geminiResult = '<p>Не удалось загрузить анализ. Попробуйте еще раз.</p>';
+      } finally {
+        this.isLoading = false;
+      }
     },
 
     /**
@@ -190,6 +193,25 @@ export const useTrainingStore = defineStore('training', {
       } finally {
         this.isLoading = false;
       }
+    },
+
+    getPromptForNewDialog(params) {
+      const { topic, level, replicas, words } = params;
+      return `Create a coherent short dialogue in Finnish on the topic of "${topic}", with a parallel Russian translation for each line. The Finnish dialogue should be at the language proficiency level ${level}, using simple structures and vocabulary appropriate for that level. The entire dialogue must consist of exactly ${replicas} replicas (lines spoken by alternating speakers, like Person A and Person B). Incorporate all the following Finnish words naturally into the dialogue: ${words}.
+      
+      For each Finnish replica, you must also generate three incorrect but plausible Russian translations. These incorrect options should be plausible distractors for a language learner, for example by using words that sound similar but have different meanings, incorrect grammar, or a contextually wrong translation.
+
+      Output the response strictly in JSON format with three keys: "fin", "rus", and "options". Do not include any additional text, explanations, or keys in the JSON.
+      
+      Example output format:
+      {
+        "fin": ["Moi.", "Mitä kuuluu?"],
+        "rus": ["Привет.", "Как дела?"],
+        "options": [
+          ["Мой.", "Пока.", "Доброе утро."],
+          ["Что включено?", "Как твое имя?", "Куда ты идешь?"]
+        ]
+      }`;
     },
 
     /**

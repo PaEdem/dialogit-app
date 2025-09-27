@@ -8,7 +8,8 @@
       <div class="card-title">{{ dialog.title }}</div>
       <div class="card-info">
         <span class="levelClass">Taso {{ dialog.level }}</span>
-        <span>{{ dialog.fin.length }} riviä</span>
+        <!-- <span>{{ dialog.fin.length }} riviä</span> -->
+        <span>{{ dialog.replicasCount }} riviä</span>
       </div>
     </div>
   </router-link>

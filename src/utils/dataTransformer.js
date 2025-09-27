@@ -1,25 +1,12 @@
 // src/utils/dataTransformer.js
 
-/**
- * Преобразует объект диалога в формат, совместимый с Firestore.
- * Оборачивает вложенный массив 'options' в массив объектов.
- * @param {object} dialogData - Объект диалога.
- * @returns {object} - Преобразованный объект.
- */
+// --- Firestore Data Transformers ---
 export function prepareDialogForFirestore(dialogData) {
-  if (!dialogData.options || !Array.isArray(dialogData.options)) {
-    return dialogData;
-  }
+  if (!dialogData.options || !Array.isArray(dialogData.options)) return dialogData;
   const optionsForFirestore = dialogData.options.map((optionSet) => ({ values: optionSet }));
   return { ...dialogData, options: optionsForFirestore };
 }
 
-/**
- * Преобразует объект диалога из формата Firestore в рабочий формат приложения.
- * Извлекает вложенный массив из 'options'.
- * @param {object} dialogData - Объект диалога из Firestore.
- * @returns {object} - Преобразованный объект.
- */
 export function prepareDialogFromFirestore(dialogData) {
   if (dialogData.options && dialogData.options[0]?.values) {
     const options = dialogData.options.map((item) => item.values);
@@ -28,48 +15,82 @@ export function prepareDialogFromFirestore(dialogData) {
   return dialogData;
 }
 
+// --- LocalStorage Cache Management ---
+const DIALOG_LIST_KEY = 'dialogsList';
+
 /**
- * Сохраняет диалог в LocalStorage.
- * @param {object} dialog - Объект диалога для сохранения.
+ * Сохраняет ОБЛЕГЧЕННЫЙ список диалогов в кеш.
+ * @param {Array} dialogs - Полный массив диалогов.
  */
-export function saveDialogToCache(dialog) {
-  if (!dialog || !dialog.id) return;
+export function saveDialogsListToCache(dialogs) {
   try {
-    const key = `dialog_${dialog.id}`;
-    // Сохраняем "чистые" данные, готовые к работе
-    localStorage.setItem(key, JSON.stringify(dialog));
+    const lightweightList = dialogs.map(({ id, title, level, fin }) => ({
+      id,
+      title,
+      level,
+      replicasCount: fin.length,
+    }));
+    localStorage.setItem(DIALOG_LIST_KEY, JSON.stringify(lightweightList));
   } catch (e) {
-    console.error('Ошибка сохранения в LocalStorage:', e);
+    console.error('Ошибка сохранения списка диалогов в кеш:', e);
   }
 }
 
 /**
- * Загружает диалог из LocalStorage.
- * @param {string} id - ID диалога.
- * @returns {object|null} - Объект диалога или null.
+ * Получает список диалогов из кеша.
+ * @returns {Array|null}
  */
-export function getDialogFromCache(id) {
-  if (!id) return null;
+export function getDialogsListFromCache() {
   try {
-    const key = `dialog_${id}`;
-    const dialogData = localStorage.getItem(key);
-    return dialogData ? JSON.parse(dialogData) : null;
+    const listData = localStorage.getItem(DIALOG_LIST_KEY);
+    return listData ? JSON.parse(listData) : null;
   } catch (e) {
-    console.error('Ошибка получения из LocalStorage:', e);
+    console.error('Ошибка получения списка диалогов из кеша:', e);
     return null;
   }
 }
 
 /**
- * Удаляет диалог из LocalStorage.
- * @param {string} id - ID диалога.
+ * Сохраняет ПОЛНЫЙ объект одного диалога в кеш.
+ * @param {object} dialog - Объект диалога.
  */
-export function removeDialogFromCache(id) {
-  if (!id) return;
+export function saveDialogToCache(dialog) {
+  if (!dialog || !dialog.id) return;
   try {
-    const key = `dialog_${id}`;
-    localStorage.removeItem(key);
+    localStorage.setItem(`dialog_${dialog.id}`, JSON.stringify(dialog));
   } catch (e) {
-    console.error('Ошибка удаления из LocalStorage:', e);
+    console.error('Ошибка сохранения диалога в кеш:', e);
+  }
+}
+
+/**
+ * Получает ПОЛНЫЙ объект одного диалога из кеша.
+ * @param {string} id - ID диалога.
+ * @returns {object|null}
+ */
+export function getDialogFromCache(id) {
+  if (!id) return null;
+  try {
+    const dialogData = localStorage.getItem(`dialog_${id}`);
+    return dialogData ? JSON.parse(dialogData) : null;
+  } catch (e) {
+    console.error('Ошибка получения диалога из кеша:', e);
+    return null;
+  }
+}
+
+/**
+ * Очищает ВЕСЬ кеш, связанный с диалогами.
+ */
+export function clearAllDialogCache() {
+  try {
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('dialog_') || key === DIALOG_LIST_KEY) {
+        localStorage.removeItem(key);
+      }
+    });
+    console.log('Кеш диалогов очищен.');
+  } catch (e) {
+    console.error('Ошибка очистки кеша:', e);
   }
 }

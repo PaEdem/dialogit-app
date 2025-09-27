@@ -1,8 +1,9 @@
+<!-- \\src\views\ViewDialog.vue -->
 <template>
   <DialogLayout>
     <template #sidebar-content>
       <button
-        class="btn tiffany full"
+        class="btn grey-light full"
         @click="getInfo"
         aria-label="Анализ диалога"
       >
@@ -11,7 +12,7 @@
       </button>
       <div class="play">
         <button
-          class="btn tiffany pad-h-05"
+          class="btn grey-light pad-h-05"
           @click="listenDialog"
           aria-label="Прослушать весь диалог"
         >
@@ -32,7 +33,7 @@
         :key="level.name"
         :to="{ name: level.name, params: { id: props.id } }"
       >
-        <button class="btn tiffany full">
+        <button class="btn grey-light full">
           <span class="material-symbols-outlined icon">{{ level.icon }}</span>
           {{ level.text }}
         </button>
@@ -60,18 +61,25 @@
     </div>
   </DialogLayout>
 
-  <Teleport to="body"> </Teleport>
+  <Teleport to="body">
+    <Modal>
+      <div v-html="trainingStore.geminiResult"></div>
+    </Modal>
+  </Teleport>
 </template>
 
 <script setup>
 import { computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useUiStore } from '../stores/uiStore';
 import { useDialogStore } from '../stores/dialogStore';
 import { useTrainingStore } from '../stores/trainingStore';
 import DialogLayout from '../components/DialogLayout.vue';
+import Modal from '../components/Modal.vue';
 
 const props = defineProps({ id: { type: String, required: true } });
 const router = useRouter();
+const uiStore = useUiStore();
 const dialogStore = useDialogStore();
 const trainingStore = useTrainingStore();
 
@@ -101,8 +109,9 @@ const listenDialog = () => {
 const stopPlay = () => {
   console.log('STOP PLAY');
 };
-const getInfo = () => {
-  console.log('Логика вызова AI для анализа');
+const getInfo = async () => {
+  await trainingStore.fetchDialogAnalysis();
+  uiStore.showModal();
 };
 </script>
 

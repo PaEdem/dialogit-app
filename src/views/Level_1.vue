@@ -39,12 +39,15 @@
   </DialogLayout>
 
   <Teleport to="body">
-    <ModalEnd
-      :show="uiStore.isModalActive"
-      @close="uiStore.hideModal()"
-    >
-      <template #header><h3 class="title">Dialogi on ohi</h3></template>
-    </ModalEnd>
+    <Modal>
+      <div class="ohi">
+        <h3 class="ohi-title">Harjoitus on ohi</h3>
+        <div class="ohi-message">
+          Hyvää työtä! Voit aloittaa alusta tai valita toisen harjoituksen.<br />
+          (Отличная работа! Можете начать заново или выбрать другую тренировку.)
+        </div>
+      </div>
+    </Modal>
   </Teleport>
 </template>
 
@@ -52,15 +55,15 @@
 import { computed, onMounted } from 'vue';
 import { useDialogStore } from '../stores/dialogStore';
 import { useTrainingStore } from '../stores/trainingStore';
-import { useUiStore } from '../stores/uiStore';
+// import { useUiStore } from '../stores/uiStore';
 import DialogLayout from '../components/DialogLayout.vue';
 import TrainingSidebar from '../components/TrainingSidebar.vue';
-import ModalEnd from '../components/ModalEnd.vue';
+import Modal from '../components/Modal.vue';
 
 const props = defineProps({ id: { type: String, required: true } });
 const dialogStore = useDialogStore();
 const trainingStore = useTrainingStore();
-const uiStore = useUiStore();
+// const uiStore = useUiStore();
 
 const lineIndex = computed(() => trainingStore.currentLineIndex);
 const dialog = computed(() => dialogStore.currentDialog);

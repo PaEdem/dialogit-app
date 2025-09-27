@@ -26,55 +26,80 @@
   background-color: var(--tiffany-90);
   border: 1px solid var(--tiffany-20);
   color: var(--tiffany-20);
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 .btn.green:hover {
   background-color: var(--tiffany-50);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
 .btn.blue {
   border: 1px solid var(--winkle-20);
   color: var(--winkle-20);
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 .btn.blue:hover {
   background-color: var(--winkle-80);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
 .btn.pink {
-  background-color: var(--red-50);
-  color: var(--red-20);
-  border: 1px solid var(--red-20);
-  transition: background-color 0.3s;
+  background-color: var(--red-60);
+  color: var(--red-30);
+  border: 1px solid var(--red-30);
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 .btn.pink:hover {
-  background-color: var(--red-80);
+  background-color: var(--red-70);
+  color: var(--red-20);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
 .btn.grey {
   border: 1px solid var(--grey-30);
   color: var(--grey-80);
   background-color: var(--grey-30);
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 .btn.grey:hover {
   background-color: var(--grey-70);
   color: var(--winkle-20);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+.btn.grey-light {
+  border: 1px solid var(--grey-30);
+  color: var(--grey-10);
+  background-color: var(--grey-60);
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+.btn.grey-light:hover {
+  background-color: var(--grey-70);
+  color: var(--winkle-20);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
 .btn.winkle {
   background-color: var(--winkle-40);
   color: var(--winkle-90);
   border: 1px solid var(--winkle-40);
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 .btn.winkle:hover {
   background-color: var(--winkle-90);
   color: var(--winkle-40);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
 .btn.tiffany {
   background-color: var(--tiffany-20);
   color: var(--tiffany-80);
   border: 1px solid var(--tiffany-20);
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 .btn.tiffany:hover {
   background-color: var(--tiffany-50);
   color: var(--tiffany-20);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
