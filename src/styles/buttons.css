@@ -34,7 +34,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
 .btn.blue {
-  border: 1px solid var(--winkle-20);
+  background-color: var(--winkle-70);
+  border: 1px solid var(--winkle-30);
   color: var(--winkle-20);
   transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
@@ -102,4 +103,76 @@
   color: var(--tiffany-20);
   transform: translateY(-3px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+.btn-control {
+  font-family: 'Roboto Condensed', sans-serif;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0;
+  border-radius: 0.5rem;
+  font-size: var(--subtext);
+  text-transform: uppercase;
+  color: var(--tiffany-60);
+  background: var(--tiffany-20);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-control:hover {
+  background: var(--tiffany-60);
+  color: var(--tiffany-20);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+.btn-control.off {
+  color: var(--grey-70);
+  background: var(--grey-60);
+  transition: none;
+}
+.btn-control:hover.off {
+  color: var(--grey-70);
+  background: var(--grey-60);
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.btn-control .icon {
+  font-size: 1.75rem;
+  margin-right: 1rem;
+}
+.btn-control.play {
+  margin: 2rem 0;
+}
+.btn-control.mic {
+  background: var(--red-30);
+}
+.btn-control.mic:hover {
+  background: var(--red-40);
+  color: var(--red-90);
+}
+.btn-control.mic.active {
+  background-color: var(--winkle-40);
+  color: var(--yellow);
+  animation: pulse 1s linear infinite;
+}
+.btn-control.mic.active:hover {
+  background-color: var(--winkle-40);
+}
+.btn-control.mic.active {
+  animation: pulse 1.5s linear infinite;
+}
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 0, 0.7), 0 0 0 0 rgba(255, 255, 0, 0.7);
+  }
+  40% {
+    box-shadow: 0 0 0 30px rgba(255, 255, 0, 0), 0 0 0 0 rgba(255, 255, 0, 0.7);
+  }
+  80% {
+    box-shadow: 0 0 0 30px rgba(255, 255, 0, 0), 0 0 0 30px rgba(255, 255, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 0, 0), 0 0 0 30px rgba(255, 255, 0, 0);
+  }
 }

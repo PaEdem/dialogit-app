@@ -12,7 +12,7 @@ export const useTrainingStore = defineStore('training', {
     isMicActive: false,
     recognitionText: '',
     geminiResult: '',
-    isLoading: false, // Локальный лоадер для AI-операций
+    isLoading: false,
   }),
   getters: {
     currentQuizOptions(state) {
@@ -33,7 +33,7 @@ export const useTrainingStore = defineStore('training', {
     startLevel() {
       this.currentLineIndex = 0;
       this.resetLineState();
-      this.playCurrentLineAudio();
+      setTimeout(() => this.playCurrentLineAudio(), 1000);
     },
     nextLine() {
       const dialogStore = useDialogStore();
@@ -108,7 +108,7 @@ export const useTrainingStore = defineStore('training', {
 
       this.recognition.onstart = () => {
         this.isMicActive = true;
-        this.recognitionText = '...kuuntelen...'; // Слушаю...
+        this.recognitionText = 'Kuunnellaan...';
       };
 
       this.recognition.onresult = (event) => {

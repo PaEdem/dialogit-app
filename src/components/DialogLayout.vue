@@ -11,7 +11,7 @@
           aria-label="Вернуться ко всем диалогам"
         >
           <span class="material-symbols-outlined icon">arrow_back_ios</span>
-          Takaisin dialogeihin
+          К списку диалогов
         </router-link>
       </div>
 

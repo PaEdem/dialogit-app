@@ -7,10 +7,11 @@
       >
         <template #extra-controls>
           <button
-            class="btn-control"
+            class="btn-control mic off"
             disabled
           >
             <span class="material-symbols-outlined icon">mic_off</span>
+            Микрофон OFF
           </button>
         </template>
       </TrainingSidebar>
@@ -37,7 +38,6 @@
       </div>
     </div>
   </DialogLayout>
-
   <Teleport to="body">
     <Modal>
       <div class="ohi">
@@ -86,33 +86,4 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
-/* Оставляем только стили для контента */
-.panel {
-  flex: 1;
-  padding: 0 2rem;
-  overflow-y: auto;
-  height: 100%;
-}
-.dialog-text-container {
-  display: flex;
-  width: 100%;
-  height: 100%; /* Важно для скролла */
-  overflow-y: hidden;
-}
-.text {
-  font-size: 1.1rem;
-  font-style: italic;
-  font-weight: 400;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--grey-b);
-  line-height: 1.5;
-}
-.finnish {
-  font-weight: 500;
-  color: var(--title);
-}
-.russian {
-  color: var(--subtitle);
-}
-</style>
+<style scoped></style>

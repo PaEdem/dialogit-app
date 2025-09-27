@@ -79,6 +79,8 @@ body {
 }
 .content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   border-radius: 0.5rem;
   padding: 1.5rem;
@@ -88,35 +90,33 @@ body {
 .m-0 {
   margin: 0 !important;
 }
-/* +++++++++++++++++++++++++++++++ */
-.level-view {
-  width: 95%;
-}
-.level-sidebar {
-  width: 15%;
-}
-.dialog-content {
-  flex: 1;
-  height: 100%;
-  background-color: var(--light);
-  border: 1px solid var(--grey-b);
-  padding: 1rem 2rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-.dialog-title {
-  font-size: 1.5rem;
-  font-weight: 400;
-  color: var(--pink);
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-.description {
-  font-size: 0.8rem;
-  line-height: 1rem;
-  font-style: italic;
-  text-align: center;
-  color: var(--back);
-  margin: 0 0.5rem;
+.dialog-text-container {
+  display: flex;
   flex-grow: 1;
+  width: 100%;
+  overflow-y: auto;
+}
+.panel {
+  display: flex;
+  flex: 1 1 50%;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0 1rem;
+}
+.text {
+  width: 100%;
+  font-size: var(--text);
+  font-style: italic;
+  font-weight: 400;
+  padding: 0.75rem 0;
+  line-height: 1.5;
+}
+.finnish {
+  font-weight: 500;
+  color: var(--winkle-30);
+  border-bottom: 1px solid var(--grey-70);
+}
+.russian {
+  color: var(--grey-30);
+  border-bottom: 1px solid var(--grey-70);
 }

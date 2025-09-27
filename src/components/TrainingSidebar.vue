@@ -8,6 +8,7 @@
         aria-label="Повторить уровень"
       >
         <span class="material-symbols-outlined icon">repeat</span>
+        Повторить диалог
       </button>
       <button
         class="btn-control"
@@ -15,6 +16,7 @@
         aria-label="Повторить реплику"
       >
         <span class="material-symbols-outlined icon">repeat_one</span>
+        Повторить реплику
       </button>
       <button
         class="btn-control play"
@@ -22,6 +24,7 @@
         aria-label="Следующая реплика"
       >
         <span class="material-symbols-outlined icon">play_arrow</span>
+        Следующая реплика
       </button>
       <slot name="extra-controls"></slot>
       <router-link
@@ -29,7 +32,8 @@
         class="btn-control"
         aria-label="Закончить тренировку"
       >
-        <span class="material-symbols-outlined icon">fast_forward</span>
+        <span class="material-symbols-outlined icon">output_circle</span>
+        Закончить тренировку
       </router-link>
     </div>
     <div class="grow"></div>
@@ -54,46 +58,15 @@ const trainingStore = useTrainingStore();
   flex-grow: 1; /* Занимает всё доступное место в сайдбаре */
 }
 .description {
-  font-size: 0.9rem;
-  color: var(--subtitle);
+  font-size: var(--subtext);
+  color: var(--tiffany-10);
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   line-height: 1.4;
 }
 .controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem;
-}
-.btn-control {
-  font-family: 'Roboto Condensed', sans-serif;
-  aspect-ratio: 1 / 1;
-  cursor: pointer;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  border-radius: 1rem;
-  background: var(--text);
-  transition: transform 0.2s, box-shadow 0.2s;
-  color: var(--pink); /* Цвет для иконок */
-}
-.btn-control .icon {
-  font-size: 3rem;
-}
-.btn-control:hover {
-  background: var(--green);
-  color: var(--light);
-  transform: translateY(-4px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-.btn-control.play {
-  background: var(--border);
-}
-.btn-control.play:hover {
-  background: var(--green);
-}
-.grow {
-  flex-grow: 1;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 </style>

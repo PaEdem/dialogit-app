@@ -58,12 +58,7 @@
   </DialogLayout>
 
   <Teleport to="body">
-    <ModalEnd
-      :show="uiStore.isModalActive"
-      @close="uiStore.hideModal()"
-    >
-      <template #header><h3 class="title">Dialogi on ohi</h3></template>
-    </ModalEnd>
+    <Modal> </Modal>
   </Teleport>
 </template>
 
@@ -74,7 +69,7 @@ import { useTrainingStore } from '../stores/trainingStore';
 import { useUiStore } from '../stores/uiStore';
 import DialogLayout from '../components/DialogLayout.vue';
 import TrainingSidebar from '../components/TrainingSidebar.vue';
-import ModalEnd from '../components/ModalEnd.vue';
+import Modal from '../components/Modal.vue';
 
 const props = defineProps({ id: { type: String, required: true } });
 const dialogStore = useDialogStore();

@@ -8,7 +8,7 @@
         aria-label="Анализ диалога"
       >
         <span class="material-symbols-outlined icon">question_mark</span>
-        Dialogin analyysi
+        Анализ диалога
       </button>
       <div class="play">
         <button
@@ -17,7 +17,7 @@
           aria-label="Прослушать весь диалог"
         >
           <span class="material-symbols-outlined icon">volume_up</span>
-          Kuuntele dialogia
+          Прослушать диалог
         </button>
         <button
           class="btn pink pad-h-05"
@@ -45,7 +45,7 @@
         aria-label="Удалить диалог"
       >
         <span class="material-symbols-outlined icon">delete</span>
-        Poista dialogi
+        Удалить диалог
       </button>
     </template>
     <div class="subtitle ta-c">{{ dialog.title }}</div>
@@ -85,10 +85,10 @@ const trainingStore = useTrainingStore();
 
 const dialog = computed(() => dialogStore.currentDialog);
 const trainingLevels = [
-  { name: 'level-1', icon: 'transcribe', text: 'Kuuntele ja opi' },
-  { name: 'level-2', icon: 'record_voice_over', text: 'Puhu ja tarkista' },
-  { name: 'level-3', icon: 'translate', text: 'Käännä ja tarkista' },
-  { name: 'level-4', icon: 'hearing', text: 'Kuuntele ja valitse' },
+  { name: 'level-1', icon: 'transcribe', text: 'Учить построчно' },
+  { name: 'level-2', icon: 'record_voice_over', text: 'Говори правильно' },
+  { name: 'level-3', icon: 'translate', text: 'Переводи правильно' },
+  { name: 'level-4', icon: 'hearing', text: 'Понимание на слух' },
 ];
 
 onMounted(() => {

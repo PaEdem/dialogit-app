@@ -3,7 +3,7 @@
     <template #sidebar-content>
       <TrainingSidebar
         :dialogId="props.id"
-        description="Финский текст, русский перевод и финская речь. Жми 'Microphone' и проверь произношение."
+        description='Финский текст, русский перевод и финская речь. Жми "Microphone" и говори. Повторно нажами на "Microphone" и проверь произношение.'
         :mic-button="true"
       >
         <template #extra-controls>
@@ -13,7 +13,8 @@
             :class="{ active: trainingStore.isMicActive }"
             aria-label="Записать произношение"
           >
-            <span class="material-symbols-outlined icon">mic</span>
+            <span class="material-symbols-outlined icon">{{ trainingStore.isMicActive ? 'mic' : 'mic_off' }}</span>
+            Микрофон {{ trainingStore.isMicActive ? 'ON' : 'OFF' }}
           </button>
         </template>
       </TrainingSidebar>
@@ -50,12 +51,16 @@
   </DialogLayout>
 
   <Teleport to="body">
-    <ModalEnd
-      :show="uiStore.isModalActive"
-      @close="uiStore.hideModal()"
-    >
-      <template #header><h3 class="title">Dialogi on ohi</h3></template>
-    </ModalEnd>
+    <Modal>
+      <div class="ohi">
+        <h3 class="ohi-title">Harjoitus on ohi</h3>
+        <div class="ohi-message">
+          Hyvää työtä! Voit aloittaa alusta tai valita toisen harjoituksen.<br />
+          <br />
+          (Отличная работа! Можете начать заново или выбрать другую тренировку.)
+        </div>
+      </div>
+    </Modal>
   </Teleport>
 </template>
 
@@ -66,7 +71,7 @@ import { useTrainingStore } from '../stores/trainingStore';
 import { useUiStore } from '../stores/uiStore';
 import DialogLayout from '../components/DialogLayout.vue';
 import TrainingSidebar from '../components/TrainingSidebar.vue';
-import ModalEnd from '../components/ModalEnd.vue';
+import Modal from '../components/Modal.vue';
 
 const props = defineProps({ id: { type: String, required: true } });
 const dialogStore = useDialogStore();
@@ -93,51 +98,11 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Оставляем только уникальные стили */
-.btn-control.mic {
-  background: var(--red);
-}
-.btn-control.mic:hover {
-  background: var(--accent);
-}
-/* Стиль для активного состояния */
-.btn-control.mic.active {
-  background-color: var(--yellow);
-  color: var(--title);
-}
-.btn-control.mic.active:hover {
-  background-color: var(--yellow);
-  opacity: 0.8;
-}
 .content-wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
-.dialog-text-container {
-  display: flex;
-  flex-grow: 1; /* Занимает всё доступное место */
-  overflow-y: auto;
-}
-.panel {
-  flex: 1;
-  padding: 0 2rem;
-}
-.text {
-  font-size: 1.1rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--grey-b);
-  line-height: 1.5;
-}
-.finnish {
-  font-weight: 500;
-  color: var(--title);
-}
-.russian {
-  font-style: italic;
-  color: var(--subtitle);
-}
-
 .recognized-text-container {
   height: 80px; /* Фиксированная высота */
   flex-shrink: 0; /* Не сжиматься */
@@ -145,13 +110,12 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--back);
-  border-top: 1px solid var(--grey-b);
+  border-top: 2px solid var(--tiffany-70);
 }
 .recognized-text {
-  font-size: 1.5rem;
+  font-size: var(--text);
   font-weight: 500;
-  color: var(--title);
+  color: var(--tiffany-10);
   text-align: center;
 }
 </style>
