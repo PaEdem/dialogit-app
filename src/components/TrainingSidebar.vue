@@ -28,6 +28,7 @@
       </button>
       <slot name="extra-controls"></slot>
       <router-link
+        @click="trainingStore.stopSpeech()"
         :to="{ name: 'view-dialog', params: { id: dialogId } }"
         class="btn-control"
         aria-label="Закончить тренировку"

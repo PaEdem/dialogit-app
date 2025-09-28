@@ -122,7 +122,7 @@ export const useTrainingStore = defineStore('training', {
       this.recognition = new SpeechRecognition();
       this.recognition.lang = 'fi-FI';
       this.recognition.continuous = true;
-      this.recognition.interimResults = false;
+      this.recognition.interimResults = true;
 
       this.recognition.onstart = () => {
         this.isMicActive = true;
@@ -130,25 +130,46 @@ export const useTrainingStore = defineStore('training', {
       };
 
       this.recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        this.recognitionText = transcript;
-
-        if (this.currentTrainingType === 'level-2') {
-          const { formattedText } = compareAndFormatTexts(finText, transcript);
-          this.formattedRecognitionText = formattedText;
-        } else if (this.currentTrainingType === 'level-3') {
-          this.checkUserTranslation(rusText, finText, level);
+        let finalTranscript = '';
+        // const transcript = event.results[0][0].transcript;
+        for (let i = 0; i < event.results.length; ++i) {
+          finalTranscript += event.results[i][0].transcript;
         }
+        // this.recognitionText = transcript;
+        this.recognitionText = finalTranscript;
+
+        // if (this.currentTrainingType === 'level-2') {
+        //   const { formattedText } = compareAndFormatTexts(finText, transcript);
+        //   this.formattedRecognitionText = formattedText;
+        // } else if (this.currentTrainingType === 'level-3') {
+        //   this.checkUserTranslation(rusText, finText, level);
+        // }
       };
 
       this.recognition.onerror = (event) => {
         console.error('Ошибка распознавания речи:', event.error);
         this.recognitionText = 'Произошла ошибка';
+        this.isMicActive = false;
+        this.recognition = null;
       };
 
       this.recognition.onend = () => {
         this.isMicActive = false;
         this.recognition = null;
+
+        const finalTranscript = this.recognitionText.trim();
+
+        if (finalTranscript && finalTranscript !== 'Kuunnellaan...') {
+          // И теперь решаем, что с ним делать
+          if (this.currentTrainingType === 'level-2') {
+            const { formattedText } = compareAndFormatTexts(finText, finalTranscript);
+            this.formattedRecognitionText = formattedText;
+          } else if (this.currentTrainingType === 'level-3') {
+            this.checkUserTranslation(rusText, finText, level);
+          }
+        } else {
+          this.recognitionText = ''; // Очищаем, если ничего не было сказано
+        }
       };
 
       this.recognition.start();

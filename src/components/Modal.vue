@@ -48,8 +48,8 @@ const uiStore = useUiStore();
   transition: opacity 0.3s ease;
 }
 .modal-container {
-  flex: 0 1 60%;
-  min-width: 640px;
+  flex: 0 1 70%;
+  min-width: 960px;
   margin: auto;
   padding: 1rem;
   background-color: var(--grey-95);
@@ -62,11 +62,16 @@ const uiStore = useUiStore();
   overflow-y: auto;
   padding: 0 0.5rem 0 1rem;
 }
+.modal-info h3 {
+  font-size: var(--subtitle);
+  color: var(--tiffany-20);
+  text-align: center;
+}
 .modal-info ul {
   padding: 0.5rem 0 1rem;
 }
-.modal-info li {
-  font-size: var(--subtext);
+.modal-info ul li {
+  font-size: var(--text);
   color: var(--winkle-20);
   font-style: italic;
   margin-bottom: 0.25rem;

@@ -63,12 +63,13 @@ import { computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useDialogStore } from '../stores/dialogStore';
 import { useUserStore } from '../stores/userStore';
+import { useTrainingStore } from '../stores/trainingStore';
 import DialogCard from '../components/DialogCard.vue';
-import Loader from '../components/Loader.vue';
 
 const router = useRouter();
 const dialogStore = useDialogStore();
 const userStore = useUserStore();
+const trainingStore = useTrainingStore();
 
 const levels = ['A1', 'A2.1', 'A2.2', 'B1.1', 'B1.2', 'B2.1', 'B2.2', 'C1.1', 'C1.2'];
 
@@ -88,6 +89,7 @@ const handleLogout = async () => {
 };
 
 onMounted(() => {
+  trainingStore.stopSpeech();
   dialogStore.fetchAllDialogs();
 });
 </script>
