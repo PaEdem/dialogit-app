@@ -7,10 +7,11 @@
       >
         <template #extra-controls>
           <button
-            class="btn-control"
+            class="btn-control mic off"
             disabled
           >
             <span class="material-symbols-outlined icon">mic_off</span>
+            Микрофон OFF
           </button>
         </template>
       </TrainingSidebar>
@@ -36,7 +37,15 @@
   </DialogLayout>
 
   <Teleport to="body">
-    <Modal> </Modal>
+    <Modal>
+      <div class="ohi">
+        <h3 class="ohi-title">Harjoitus on ohi</h3>
+        <div class="ohi-message">
+          Hyvää työtä! Voit aloittaa alusta tai valita toisen harjoituksen.<br />
+          (Отличная работа! Можете начать заново или выбрать другую тренировку.)
+        </div>
+      </div>
+    </Modal>
   </Teleport>
 </template>
 
@@ -44,7 +53,6 @@
 import { ref, watch, onMounted } from 'vue';
 import { useDialogStore } from '../stores/dialogStore';
 import { useTrainingStore } from '../stores/trainingStore';
-import { useUiStore } from '../stores/uiStore';
 import DialogLayout from '../components/DialogLayout.vue';
 import TrainingSidebar from '../components/TrainingSidebar.vue';
 import Modal from '../components/Modal.vue';
@@ -52,7 +60,6 @@ import Modal from '../components/Modal.vue';
 const props = defineProps({ id: { type: String, required: true } });
 const dialogStore = useDialogStore();
 const trainingStore = useTrainingStore();
-const uiStore = useUiStore();
 
 const answerStatus = ref({});
 const isAnswered = ref(false);
@@ -81,6 +88,7 @@ const handleAnswer = (option) => {
 };
 
 onMounted(async () => {
+  trainingStore.currentTrainingType = 'level-4';
   await dialogStore.fetchDialogById(props.id);
   if (dialogStore.currentDialog) {
     trainingStore.startLevel();
@@ -115,27 +123,27 @@ onMounted(async () => {
   font-weight: 400;
   text-align: center;
   cursor: pointer;
-  background: var(--back);
-  color: var(--title);
+  background: var(--winkle-80);
+  color: var(--winkle-20);
   border-radius: 1rem;
-  border: 1px solid var(--grey-b);
-  transition: all 0.2s ease-in-out;
+  border: 1px solid var(--winkle-70);
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 .btn-quiz:not(:disabled):hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-color: var(--pink);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+  border-color: var(--winkle-30);
 }
 .btn-quiz.correct {
-  background-color: var(--green);
-  color: white;
-  border-color: var(--green);
+  background-color: var(--tiffany-60);
+  color: var(--tiffany-20);
+  border-color: var(--tiffany-10);
   transform: scale(1.05);
 }
 .btn-quiz.incorrect {
-  background-color: #fcebeb; /* Легкий красный фон */
-  color: #c62828;
-  border-color: #c62828;
+  background-color: var(--red-80);
+  color: var(--red-20);
+  border-color: var(--red-70);
   opacity: 0.8;
   cursor: not-allowed;
 }

@@ -22,7 +22,12 @@ export const useUiStore = defineStore('ui', {
       this.isLoading = value;
     },
     showModal() {
-      this.isModalActive = true;
+      const trainingStore = useTrainingStore();
+      if (trainingStore.currentTrainingType !== 'level-4') {
+        this.isModalActive = true;
+      } else {
+        setTimeout(() => (this.isModalActive = true), 1000);
+      }
     },
     hideModal() {
       this.isModalActive = false;
