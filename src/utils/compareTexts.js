@@ -106,7 +106,44 @@ export function compareAndFormatTexts(originalText, recognizedText) {
     matchIndex++;
   }
 
-  const score = ((correctWordsCount / Math.max(originalWords.length, 1)) * 100).toFixed(0);
+  // const score = ((correctWordsCount / Math.max(originalWords.length, 1)) * 100).toFixed(0);
 
-  return { formattedText, score };
+  // return { formattedText, score };
+  return { formattedText };
+}
+
+// src/utils/compareTexts.js
+
+// Функция возвращает массив объектов, описывающих каждое слово
+export function analyzeRecognition(originalText, recognizedText) {
+  const originalParts = originalText.match(/(\w+)|(\s+)|[.,!?;:]/g) || [];
+  const recognizedWords = recognizedText.toLowerCase().match(/\w+/g) || [];
+
+  // Здесь может быть ваш сложный алгоритм сравнения (Левенштейн и т.д.)
+  // Для примера, сделаем более простое пословное сравнение:
+
+  const result = [];
+  let recIndex = 0;
+  let correctCount = 0;
+
+  originalParts.forEach((part) => {
+    if (/\w+/.test(part)) {
+      // Если это слово
+      if (recIndex < recognizedWords.length && part.toLowerCase() === recognizedWords[recIndex]) {
+        result.push({ type: 'word', text: part, status: 'correct' });
+        correctCount++;
+      } else {
+        // Просто помечаем оригинальное слово как неправильное
+        result.push({ type: 'word', text: part, status: 'incorrect' });
+      }
+      recIndex++;
+    } else {
+      // Если это пробел или пунктуация
+      result.push({ type: 'separator', text: part });
+    }
+  });
+
+  const score = Math.round((correctCount / (originalParts.filter((p) => /\w+/.test(p)).length || 1)) * 100);
+
+  return { analysis: result, score };
 }

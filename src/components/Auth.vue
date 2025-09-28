@@ -2,54 +2,66 @@
 <template>
   <div class="auth-container">
     <div class="form">
-      <h2 class="title auth-title">{{ isLoginMode ? 'Kirjaudu sisään' : 'Rekisteröidy' }}</h2>
+      <div class="auth-subtitle subtitle">{{ isLoginMode ? 'Kirjaudu sisään' : 'Rekisteröidy' }}</div>
+
+      <p
+        v-if="errorMessage"
+        class="error-message"
+      >
+        {{ errorMessage }}
+      </p>
 
       <form @submit.prevent="handleSubmit">
         <input
           type="email"
           v-model="email"
-          placeholder="Email"
+          placeholder="Sähköposti"
           required
         />
         <input
           type="password"
           v-model="password"
-          placeholder="Password"
+          placeholder="Salasana"
           required
         />
+
         <button
           type="submit"
-          class="btn clear auth-btn"
+          class="btn green auth-btn"
+          :disabled="isLoading"
         >
-          <span class="material-symbols-outlined icon">{{ isLoginMode ? 'login' : 'account_circle' }}</span>
+          <span
+            v-if="!isLoading"
+            class="material-symbols-outlined icon"
+            >{{ isLoginMode ? 'login' : 'account_circle' }}</span
+          >
           {{ isLoginMode ? 'Kirjaudu sisään' : 'Rekisteröidy' }}
         </button>
       </form>
 
-      <div class="divider">
-        <span>tai</span>
-      </div>
+      <div class="divider"><span>tai</span></div>
 
       <button
         @click="handleGoogleSignIn"
-        class="btn clear google-btn"
+        class="btn green google-btn"
+        :disabled="isLoading"
       >
         <img
           class="icon google-icon"
           src="../assets/google.svg"
-          alt=""
+          alt="Google icon"
         />
         Googlella
       </button>
 
       <p class="toggle-mode">
         {{ isLoginMode ? 'Eikö ole tiliäsi?' : 'Onko jo tilisi?' }}
-        <span
+        <button
           @click="toggleMode"
           class="toggle-link"
         >
           {{ isLoginMode ? 'Rekisteröidy' : 'Kirjaudu sisään' }}
-        </span>
+        </button>
       </p>
     </div>
   </div>
@@ -57,7 +69,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import { useUserStore } from '../stores/user.js';
+import { useUserStore } from '../stores/userStore'; // Используем новый userStore
 import { useRouter } from 'vue-router';
 
 const userStore = useUserStore();
@@ -65,11 +77,17 @@ const router = useRouter();
 
 const email = ref('');
 const password = ref('');
-const mode = ref('login'); // 'login' или 'signup'
+const mode = ref('login');
+
+// ✨ НОВЫЕ СОСТОЯНИЯ ДЛЯ UX
+const isLoading = ref(false);
+const errorMessage = ref('');
 
 const isLoginMode = computed(() => mode.value === 'login');
 
 const handleSubmit = async () => {
+  isLoading.value = true;
+  errorMessage.value = ''; // Сбрасываем ошибку
   try {
     if (isLoginMode.value) {
       await userStore.loginWithEmail(email.value, password.value);
@@ -78,22 +96,44 @@ const handleSubmit = async () => {
     }
     router.push({ name: 'all-dialogs' });
   } catch (error) {
-    alert(error.message);
+    // ✨ ПОКАЗЫВАЕМ ДРУЖЕЛЮБНУЮ ОШИБКУ
+    errorMessage.value = getFriendlyErrorMessage(error.code);
+  } finally {
+    isLoading.value = false;
   }
 };
 
 const handleGoogleSignIn = async () => {
+  isLoading.value = true;
+  errorMessage.value = '';
   try {
     await userStore.loginWithGoogle();
     router.push({ name: 'all-dialogs' });
   } catch (error) {
-    alert(error.message);
+    errorMessage.value = getFriendlyErrorMessage(error.code);
+  } finally {
+    isLoading.value = false;
   }
 };
 
 const toggleMode = () => {
   mode.value = isLoginMode.value ? 'signup' : 'login';
+  errorMessage.value = '';
 };
+
+// ✨ УТИЛИТА ДЛЯ ПРЕОБРАЗОВАНИЯ ОШИБОК FIREBASE
+function getFriendlyErrorMessage(errorCode) {
+  switch (errorCode) {
+    case 'auth/wrong-password':
+      return 'Väärä salasana. Yritä uudelleen.';
+    case 'auth/user-not-found':
+      return 'Käyttäjää ei löytynyt tällä sähköpostilla.';
+    case 'auth/email-already-in-use':
+      return 'Tämä sähköposti on jo käytössä.';
+    default:
+      return 'Tapahtui virhe. Yritä uudelleen myöhemmin.';
+  }
+}
 </script>
 
 <style scoped>
@@ -105,25 +145,23 @@ const toggleMode = () => {
   text-align: center;
   padding: 1rem;
   height: 100vh;
-  background-color: var(--pink);
 }
-.auth-title {
-  font-size: 1.5rem;
+.auth-subtitle {
   margin-bottom: 2rem;
 }
 .form {
   min-width: 25%;
-  background: var(--back);
+  background: var(--tiffany-90);
   padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
 input {
   display: block;
   width: 100%;
   padding: 0.75rem;
   margin-bottom: 1rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--tiffany-80);
   border-radius: 4px;
 }
 .google-btn {
@@ -144,8 +182,8 @@ input {
   text-align: center;
 }
 .divider span {
-  background: var(--back);
-  color: var(--subtitle);
+  background: var(--tiffany-90);
+  color: var(--tiffany-20);
   padding: 0 1rem;
   position: relative;
   z-index: 1;
@@ -157,18 +195,26 @@ input {
   left: 0;
   right: 0;
   height: 1px;
-  background-color: var(--border);
+  background-color: var(--tiffany-20);
   z-index: 0;
 }
 .toggle-mode {
   margin-top: 2rem;
   font-size: 1rem;
-  color: var(--subtitle);
+  color: var(--tiffany-20);
+}
+.error-message {
+  color: var(--red-20);
+  margin-bottom: 1rem;
+  font-weight: 500;
 }
 .toggle-link {
+  background: none;
+  border: none;
+  padding: 0;
   font-size: 1rem;
   padding-left: 0.5rem;
-  color: var(--border);
+  color: var(--winkle-60);
   cursor: pointer;
   text-decoration: underline;
 }

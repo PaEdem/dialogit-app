@@ -22,7 +22,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 999;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -51,7 +51,7 @@
   width: 10px;
   height: 50px;
   border-radius: 10px;
-  background-color: var(--accent);
+  background-color: var(--tiffany-50);
 }
 .ml-loader div:nth-child(1) {
   transform: rotate(0);

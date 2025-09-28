@@ -1,23 +1,25 @@
+<!-- \\src\components\Modal.vue -->
 <template>
   <Transition name="modal">
     <div
-      v-if="show"
+      v-if="uiStore.isModalActive"
       class="modal-mask"
+      @click.self="uiStore.hideModal()"
     >
       <div class="modal-container">
         <div class="modal-body">
-          <div
-            class="modal-info"
-            v-html="formattedGeminiResult"
-          ></div>
+          <div class="modal-info">
+            <slot></slot>
+          </div>
         </div>
+
         <div class="modal-footer">
           <div class="grow"></div>
           <button
-            class="btn blue"
-            @click="$emit('close')"
+            class="btn grey"
+            @click="uiStore.hideModal()"
           >
-            <span class="material-symbols-outlined icon"> close </span>
+            <span class="material-symbols-outlined icon">close</span>
             Sulje
           </button>
         </div>
@@ -27,84 +29,85 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { marked } from 'marked';
-import { useStore } from '../stores/store';
-
-const props = defineProps({
-  show: Boolean,
-});
-
-const store = useStore();
-
-const formattedGeminiResult = computed(() => {
-  if (store.geminiResult) {
-    return marked.parse(store.geminiResult);
-  }
-  return '';
-});
+import { useUiStore } from '../stores/uiStore';
+const uiStore = useUiStore();
 </script>
 
 <style>
 .modal-mask {
   position: fixed;
-  z-index: 9998;
+  z-index: 900;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
+  justify-content: center;
+  align-items: center;
   transition: opacity 0.3s ease;
 }
 .modal-container {
-  width: 960px;
+  flex: 0 1 60%;
+  min-width: 640px;
   margin: auto;
   padding: 1rem;
-  background-color: var(--back);
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  background-color: var(--grey-95);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
   transition: all 0.3s ease;
 }
 .modal-body {
   max-height: 60vh;
   overflow-y: auto;
-  padding: 0 1rem;
-}
-.modal-info {
-  color: var(--grey-4);
-  font-size: 1.1rem;
-}
-.modal-info h2 {
-  text-align: center;
-  margin: 0;
-  padding-bottom: 0.5rem;
-  font-weight: 600;
-  color: var(--heading);
-}
-.modal-info h3 {
-  margin: 0;
-  font-weight: 500;
-  text-align: center;
-  padding: 0.5rem 0;
-  color: var(--text);
+  padding: 0 0.5rem 0 1rem;
 }
 .modal-info ul {
   padding: 0.5rem 0 1rem;
 }
+.modal-info li {
+  font-size: var(--subtext);
+  color: var(--winkle-20);
+  font-style: italic;
+  margin-bottom: 0.25rem;
+}
 .modal-info li::marker {
   content: '';
 }
-.modal-info li strong {
+.modal-info li strong,
+.modal-info li code,
+.modal-info li strong code {
+  font-family: 'Roboto Condensed', 'Open Sans', 'Roboto', 'Segoe UI', sans-serif !important;
   font-weight: 500;
-  color: var(--title);
+  color: var(--red-30);
 }
 .modal-info ul li ul li {
   padding-left: 1rem;
 }
+.ohi {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.ohi-title {
+  font-size: var(--title);
+  padding-top: 2rem;
+  text-align: center;
+  margin: 0 auto;
+  color: var(--red-20);
+}
+.ohi-message {
+  font-size: var(--subtitle);
+  text-align: center;
+  padding: 2rem;
+  margin: 0 auto;
+  color: var(--red-20);
+}
 .modal-footer {
   display: flex;
-  padding: 0.5rem 1rem;
+  padding: 0 2rem;
 }
 .modal-enter-from {
   opacity: 0;

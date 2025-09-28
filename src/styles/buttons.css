@@ -1,19 +1,21 @@
 /* src\styles\buttons.css */
 .btn {
-  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 2rem;
   border-radius: 0.35rem;
   font-family: 'Roboto Condensed', sans-serif;
   text-transform: uppercase;
-  height: 40px;
   line-height: 40px;
   font-size: 1.1rem;
-  font-weight: 300;
+  font-weight: 400;
   cursor: pointer;
 }
 .btn:disabled {
-  background-color: var(--grey-1);
-  color: var(--grey-b);
-  border: 1px solid var(--grey-b);
+  background-color: var(--grey-70);
+  color: var(--grey-50);
+  border: 1px solid var(--grey-50);
   cursor: not-allowed;
 }
 .btn .icon {
@@ -23,182 +25,157 @@
   height: 28px;
   line-height: 24px;
 }
-.btn:disabled .icon {
-  background-color: var(--grey-1);
-  color: var(--grey-3);
-}
 .btn.green {
-  background-color: var(--green-3);
-  border: 1px solid var(--green-2);
-  color: var(--green-1);
-  transition: background-color 0.3s, color 0.3s;
-}
-.btn.green .icon {
-  background-color: var(--green-3);
-  color: var(--green-1);
-  transition: background-color 0.3s, color 0.3s;
+  background-color: var(--tiffany-90);
+  border: 1px solid var(--tiffany-20);
+  color: var(--tiffany-20);
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 .btn.green:hover {
-  background-color: var(--green-2);
-  color: var(--grey-1);
-}
-.btn.green:hover .icon {
-  background-color: var(--green-2);
-  color: var(--grey-1);
-}
-.btn.grey {
-  background-color: var(--grey-3);
-  border: 1px solid var(--grey-b);
-  color: var(--grey-4);
-  transition: background-color 0.3s, color 0.3s;
-}
-.btn.grey .icon {
-  background-color: var(--grey-3);
-  color: var(--grey-4);
-  transition: background-color 0.3s, color 0.3s;
-}
-.btn.grey:hover {
-  background-color: var(--grey-4);
-  color: var(--grey-1);
-}
-.btn.grey:hover .icon {
-  background-color: var(--grey-4);
-  color: var(--grey-1);
-}
-.btn.red {
-  background-color: var(--red-3);
-  border: 1px solid var(--red-2);
-  color: var(--red-1);
-  transition: background-color 0.3s, color 0.3s;
-}
-.btn.red .icon {
-  background-color: var(--red-3);
-  color: var(--red-1);
-  transition: background-color 0.3s, color 0.3s;
-}
-.btn.red:hover {
-  background-color: var(--red-1);
-  color: var(--red-3);
-}
-.btn.red:hover .icon {
-  background-color: var(--red-1);
-  color: var(--red-3);
-}
-/*  */
-.btn.accent {
-  background-color: var(--accent);
-  border: 1px solid var(--pink);
-  color: var(--light);
-  transition: background-color 0.3s, color 0.3s;
-}
-.btn.accent .icon {
-  background-color: var(--accent);
-  color: var(--light);
-  transition: background-color 0.3s, color 0.3s;
-}
-.btn.accent:hover {
-  background-color: var(--pink);
-  border: 1px solid var(--border);
-  color: var(--title);
-}
-.btn.accent:hover .icon {
-  background-color: var(--pink);
-  color: var(--title);
-}
-.btn.clear {
-  background-color: transparent;
-  border: 1px solid var(--title);
-  color: var(--title);
-}
-.btn.clear .icon {
-  background-color: transparent;
-  color: var(--title);
-}
-.btn.clear:hover {
-  background-color: var(--title);
-  color: var(--back);
-}
-.btn.clear:hover .icon {
-  background-color: var(--title);
-  color: var(--back);
+  background-color: var(--tiffany-50);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
 .btn.blue {
-  background-color: var(--border);
-  border: 1px solid var(--border);
-  color: var(--back);
-}
-.btn.blue .icon {
-  background-color: var(--border);
-  color: var(--back);
+  background-color: var(--winkle-70);
+  border: 1px solid var(--winkle-30);
+  color: var(--winkle-20);
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 .btn.blue:hover {
-  background-color: var(--title);
-  color: var(--light);
+  background-color: var(--winkle-80);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
-.btn.blue:hover .icon {
-  background-color: var(--title);
-  color: var(--light);
+.btn.pink {
+  background-color: var(--red-60);
+  color: var(--red-30);
+  border: 1px solid var(--red-30);
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
-.btn-side {
-  padding: 0 1rem;
+.btn.pink:hover {
+  background-color: var(--red-70);
+  color: var(--red-20);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+.btn.grey {
+  border: 1px solid var(--grey-30);
+  color: var(--grey-80);
+  background-color: var(--grey-30);
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+.btn.grey:hover {
+  background-color: var(--grey-70);
+  color: var(--winkle-20);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+.btn.grey-light {
+  border: 1px solid var(--grey-30);
+  color: var(--grey-10);
+  background-color: var(--grey-60);
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+.btn.grey-light:hover {
+  background-color: var(--grey-70);
+  color: var(--winkle-20);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+.btn.winkle {
+  background-color: var(--winkle-40);
+  color: var(--winkle-90);
+  border: 1px solid var(--winkle-40);
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+.btn.winkle:hover {
+  background-color: var(--winkle-90);
+  color: var(--winkle-40);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+.btn.tiffany {
+  background-color: var(--tiffany-20);
+  color: var(--tiffany-80);
+  border: 1px solid var(--tiffany-20);
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+.btn.tiffany:hover {
+  background-color: var(--tiffany-50);
+  color: var(--tiffany-20);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+.btn-control {
   font-family: 'Roboto Condensed', sans-serif;
-  text-transform: uppercase;
-  height: 64px;
-  line-height: 64px;
-  font-size: 1.1rem;
-  font-weight: 400;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  background: var(--text);
-  color: var(--pink);
+  padding: 1rem 0;
+  border-radius: 0.5rem;
+  font-size: var(--subtext);
+  text-transform: uppercase;
+  color: var(--tiffany-60);
+  background: var(--tiffany-20);
   transition: transform 0.2s, box-shadow 0.2s;
 }
-.btn-side .icon {
-  vertical-align: middle;
-  margin-right: 0.5rem;
-  font-size: 24px;
-  height: 68px;
-  line-height: 64px;
-  color: var(--pink);
-}
-.btn-side:hover {
-  background: var(--border);
-  color: var(--light);
+.btn-control:hover {
+  background: var(--tiffany-60);
+  color: var(--tiffany-20);
   transform: translateY(-4px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
-.btn-side:hover .icon {
-  color: var(--light);
+.btn-control.off {
+  color: var(--grey-70);
+  background: var(--grey-60);
+  transition: none;
 }
-.btn-menu {
-  font-family: 'Roboto Condensed', sans-serif;
-  text-transform: uppercase;
-  margin: 0.1rem 0;
-  height: 60px;
-  line-height: 60px;
-  font-size: 1rem;
-  font-weight: 400;
-  text-align: center;
-  cursor: pointer;
-  width: 100%;
-  background: var(--text);
-  color: var(--pink);
-  transition: transform 0.2s, box-shadow 0.2s;
+.btn-control:hover.off {
+  color: var(--grey-70);
+  background: var(--grey-60);
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
 }
-.btn-menu .icon {
-  vertical-align: middle;
-  margin-right: 0.5rem;
-  font-size: 20px;
-  height: 64px;
-  line-height: 60px;
-  color: var(--pink);
+.btn-control .icon {
+  font-size: 1.75rem;
+  margin-right: 1rem;
 }
-.btn-menu:hover {
-  background: var(--border);
-  color: var(--light);
-  transform: translateY(-4px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.btn-control.play {
+  margin: 2rem 0;
 }
-.btn-menu:hover .icon {
-  color: var(--light);
+.btn-control.mic {
+  background: var(--red-30);
+}
+.btn-control.mic:hover {
+  background: var(--red-40);
+  color: var(--red-90);
+}
+.btn-control.mic.active {
+  background-color: var(--winkle-40);
+  color: var(--yellow);
+  animation: pulse 1s linear infinite;
+}
+.btn-control.mic.active:hover {
+  background-color: var(--winkle-40);
+}
+.btn-control.mic.active {
+  animation: pulse 1.5s linear infinite;
+}
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 0, 0.7), 0 0 0 0 rgba(255, 255, 0, 0.7);
+  }
+  40% {
+    box-shadow: 0 0 0 30px rgba(255, 255, 0, 0), 0 0 0 0 rgba(255, 255, 0, 0.7);
+  }
+  80% {
+    box-shadow: 0 0 0 30px rgba(255, 255, 0, 0), 0 0 0 30px rgba(255, 255, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 0, 0), 0 0 0 30px rgba(255, 255, 0, 0);
+  }
 }

@@ -7,24 +7,20 @@
     </main>
   </div>
 </template>
-
 <script setup>
 import { computed } from 'vue';
-import { useStore } from './stores/store';
+import { useUiStore } from './stores/uiStore';
 import Loader from './components/Loader.vue';
-
-const store = useStore();
-const isLoading = computed(() => {
-  return store.loading;
-});
+const uiStore = useUiStore();
+const isLoading = computed(() => uiStore.isAppLoading);
 </script>
-
 <style scoped>
 .app-wrapper {
   min-height: 100vh;
+  min-width: 100vw;
   display: flex;
   flex-direction: column;
-  background-color: var(--back);
+  background-color: var(--red-80);
 }
 .main {
   flex: 1;

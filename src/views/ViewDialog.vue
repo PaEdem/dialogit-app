@@ -1,192 +1,148 @@
-<!-- src\views\ViewDialog.vue -->
+<!-- \\src\views\ViewDialog.vue -->
 <template>
-  <div
-    v-if="dialog"
-    class="dialog-view"
-  >
-    <div class="sidebar">
-      <div class="dialog-title">{{ dialog.title }}</div>
+  <DialogLayout>
+    <template #sidebar-content>
       <button
-        class="btn-menu"
+        class="btn grey-light full"
         @click="getInfo"
+        aria-label="Анализ диалога"
       >
         <span class="material-symbols-outlined icon">question_mark</span>
-        Dialogin analyysi
+        Анализ диалога
       </button>
-      <button
-        class="btn-menu"
-        @click="listenDialog"
-      >
-        <span class="material-symbols-outlined icon">brand_awareness</span>
-        Kuuntele dialogia
-      </button>
-      <div class="grow"></div>
-      <router-link :to="{ name: 'level-1', params: { id: dialog.id } }">
-        <button class="btn-menu">
-          <span class="material-symbols-outlined icon">transcribe</span>
-          Kuuntele ja opi
+      <div class="play">
+        <button
+          class="btn grey-light pad-h-05"
+          @click="listenDialog"
+          aria-label="Прослушать весь диалог"
+        >
+          <span class="material-symbols-outlined icon">volume_up</span>
+          Прослушать диалог
         </button>
-      </router-link>
-      <router-link :to="{ name: 'level-2', params: { id: dialog.id } }">
-        <button class="btn-menu">
-          <span class="material-symbols-outlined icon">record_voice_over</span>
-          Puhu ja tarkista
+        <button
+          class="btn pink pad-h-05"
+          @click="stopPlay"
+        >
+          <span class="material-symbols-outlined icon m-0">volume_off</span>
         </button>
-      </router-link>
-      <router-link :to="{ name: 'level-3', params: { id: dialog.id } }">
-        <button class="btn-menu">
-          <span class="material-symbols-outlined icon">translate</span>
-          Käännä ja tarkista
-        </button>
-      </router-link>
-      <router-link :to="{ name: 'level-4', params: { id: dialog.id } }">
-        <button class="btn-menu">
-          <span class="material-symbols-outlined icon">hearing</span>
-          Kuuntele ja tarkista
-        </button>
-      </router-link>
+      </div>
+
       <div class="grow"></div>
       <router-link
-        v-if="dialog"
-        to="/dialogs"
-        class="btn-menu"
+        v-for="level in trainingLevels"
+        :key="level.name"
+        :to="{ name: level.name, params: { id: props.id } }"
       >
-        <span class="material-symbols-outlined icon">chat</span>
-        kaikki dialogit
+        <button class="btn grey-light full">
+          <span class="material-symbols-outlined icon">{{ level.icon }}</span>
+          {{ level.text }}
+        </button>
       </router-link>
+      <div class="grow"></div>
       <button
-        class="btn-menu"
-        @click="deleteAndGoBack"
+        class="btn grey full"
+        @click="handleDelete"
+        aria-label="Удалить диалог"
       >
         <span class="material-symbols-outlined icon">delete</span>
-        Poista dialogi
+        Удалить диалог
       </button>
-    </div>
-    <div class="dialog-content">
-      <div class="scroll-container">
-        <div
-          v-for="(fin, index) in dialog.fin"
-          :key="index"
-          class="dialog-line"
-        >
-          <p class="finnish-text">{{ fin }}</p>
-          <p class="russian-text">{{ dialog.rus[index] }}</p>
-        </div>
+    </template>
+    <div class="subtitle ta-c">{{ dialog.title }}</div>
+    <div class="scroll-container">
+      <div
+        v-for="(fin, index) in dialogStore.currentDialog.fin"
+        :key="index"
+        class="dialog-line"
+      >
+        <p class="finnish-text">{{ fin }}</p>
+        <p class="russian-text">{{ dialogStore.currentDialog.rus[index] }}</p>
       </div>
     </div>
-    <Teleport to="body">
-      <modal
-        :show="store.showModal && isGeminiResult"
-        @close="store.setShowModal(false)"
-      >
-        <template #header>
-          <h3 class="title">Лексика и грамматика</h3>
-        </template>
-      </modal>
-    </Teleport>
-  </div>
+  </DialogLayout>
+
+  <Teleport to="body">
+    <Modal>
+      <div v-html="trainingStore.geminiResult"></div>
+    </Modal>
+  </Teleport>
 </template>
 
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useStore } from '../stores/store';
+import { useRouter } from 'vue-router';
+import { useUiStore } from '../stores/uiStore';
+import { useDialogStore } from '../stores/dialogStore';
+import { useTrainingStore } from '../stores/trainingStore';
+import DialogLayout from '../components/DialogLayout.vue';
 import Modal from '../components/Modal.vue';
 
-const route = useRoute();
+const props = defineProps({ id: { type: String, required: true } });
 const router = useRouter();
-const store = useStore();
+const uiStore = useUiStore();
+const dialogStore = useDialogStore();
+const trainingStore = useTrainingStore();
 
-const dialog = computed(() => {
-  return store.currentDialog;
-});
-const isGeminiResult = computed(() => {
-  return !!store.geminiResult;
-});
+const dialog = computed(() => dialogStore.currentDialog);
+const trainingLevels = [
+  { name: 'level-1', icon: 'transcribe', text: 'Учить построчно' },
+  { name: 'level-2', icon: 'record_voice_over', text: 'Говори правильно' },
+  { name: 'level-3', icon: 'translate', text: 'Переводи правильно' },
+  { name: 'level-4', icon: 'hearing', text: 'Понимание на слух' },
+];
 
 onMounted(() => {
-  store.getDialogById(route.params.id);
-  if (dialog.value) {
-    store.isViewBatton = true;
-    store.setCurrentDialog(dialog.value);
-  }
+  dialogStore.fetchDialogById(props.id);
 });
-const deleteAndGoBack = async () => {
-  const success = await store.deleteAndGoBack(route.params.id);
+const handleDelete = async () => {
+  const success = await dialogStore.deleteDialog(props.id);
   if (success) {
     router.push({ name: 'all-dialogs' });
   }
 };
 const listenDialog = () => {
-  if (!dialog.value) return;
-  const finText = dialog.value.fin.join('. ');
-  store.playText(finText);
+  const dialog = dialogStore.currentDialog;
+  if (!dialog) return;
+  const fullText = dialog.fin.join('. ');
+  trainingStore.playText(fullText);
 };
-const getInfo = () => {
-  if (!dialog.value) return;
-  store.geminiResult = '';
-  const finText = dialog.value.fin.join('. ');
-  const promptForInfo = store.getPromptInfo(finText);
-  store.askGemini(promptForInfo);
-  store.setShowModal(true);
+const stopPlay = () => {
+  trainingStore.stopSpeech();
+};
+const getInfo = async () => {
+  await trainingStore.fetchDialogAnalysis();
+  uiStore.showModal();
 };
 </script>
 
 <style scoped>
-/* .dialog-view {
-  position: relative;
-  display: flex;
-  gap: 1rem;
-  width: 80%;
-  height: 90vh;
-  margin: 0 auto;
-  margin-top: 5vh;
+.play {
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  grid-template-rows: 1fr;
+  grid-column-gap: 0.25rem;
 }
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  background: var(--subtitle);
-  border-radius: 0.5rem;
-  padding: 2rem 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-.dialog-content {
-  flex: 1;
-  height: 100%;
-  background-color: var(--light);
-  border: 1px solid var(--grey-b);
-  padding: 1rem 2rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-.dialog-title {
-  font-size: 1.5rem;
-  font-weight: 400;
-  color: var(--pink);
-  text-align: center;
-  margin-bottom: 1rem;
-  flex-grow: 1;
+.pad-h-05 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 .scroll-container {
-  max-height: 100%;
-  overflow-y: auto;
-} */
+  padding-right: 1rem;
+}
 .dialog-line {
-  margin-right: 1rem;
-  border-bottom: 1px solid var(--grey-b);
+  border-bottom: 1px solid var(--grey-70);
 }
 .finnish-text {
-  font-size: 1.1rem;
+  font-size: var(--text);
   font-weight: 500;
-  color: var(--title);
-  margin: 0.5rem 0;
+  color: var(--tiffany-20);
+  margin: 0.75rem 0;
 }
 .russian-text {
-  font-size: 1rem;
+  font-size: var(--subtext);
   font-style: italic;
-  color: var(--text);
-  margin: 0.5rem 0;
+  color: var(--winkle-40);
+  margin: 0.75rem 0;
   padding-left: 2rem;
 }
 </style>

@@ -1,0 +1,50 @@
+/* //src/styles/variables.css */
+:root {
+  /* COLORS */
+  /* GREY */
+  --grey-10: hsl(210, 20%, 10%);
+  --grey-30: hsl(210, 20%, 30%);
+  --grey-50: hsl(210, 20%, 50%);
+  --grey-60: hsl(210, 20%, 60%);
+  --grey-70: hsl(210, 20%, 70%);
+  --grey-80: hsl(210, 20%, 80%);
+  --grey-90: hsl(210, 20%, 90%);
+  --grey-95: hsl(210, 20%, 95%);
+  /* RED */
+  --red-20: hsl(0, 60%, 20%);
+  --red-30: hsl(0, 60%, 30%);
+  --red-40: hsl(0, 60%, 40%);
+  --red-50: hsl(0, 60%, 50%);
+  --red-60: hsl(0, 60%, 60%);
+  --red-70: hsl(0, 60%, 70%);
+  --red-80: hsl(0, 60%, 80%);
+  --red-90: hsl(0, 60%, 90%);
+  /* YELLOW */
+  --yellow: hsl(60, 100%, 50%);
+  /* GREEN */
+  --tiffany-10: hsl(180, 40%, 10%);
+  --tiffany-20: hsl(180, 40%, 20%);
+  --tiffany-30: hsl(180, 40%, 30%);
+  --tiffany-40: hsl(180, 40%, 40%);
+  --tiffany-50: hsl(180, 40%, 50%);
+  --tiffany-60: hsl(180, 40%, 60%);
+  --tiffany-70: hsl(180, 40%, 70%);
+  --tiffany-80: hsl(180, 40%, 80%);
+  --tiffany-90: hsl(180, 40%, 90%);
+  /* BLUE */
+  --winkle-10: hsl(240, 50%, 10%);
+  --winkle-20: hsl(240, 50%, 20%);
+  --winkle-30: hsl(240, 50%, 30%);
+  --winkle-40: hsl(240, 50%, 40%);
+  --winkle-60: hsl(240, 50%, 60%);
+  --winkle-70: hsl(240, 50%, 70%);
+  --winkle-80: hsl(240, 50%, 80%);
+  --winkle-90: hsl(240, 50%, 90%);
+  /* TEXT */
+  --head: 2.5rem;
+  --title: 2rem;
+  --subtitle: 1.5rem;
+  --text: 1.25rem;
+  --subtext: 1.05rem;
+  --description: 0.8rem;
+}

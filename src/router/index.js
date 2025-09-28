@@ -1,6 +1,6 @@
-// src\router\index.js
+// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import { useUserStore } from '../stores/user.js';
+import { useUserStore } from '../stores/userStore.js';
 import Readme from '../views/Readme.vue';
 import Auth from '../components/Auth.vue';
 import AllDialogs from '../views/AllDialogs.vue';
@@ -45,24 +45,28 @@ const routes = [
     path: '/training/level-1/:id',
     name: 'level-1',
     component: Level_1,
+    props: true,
     meta: { requiresAuth: true },
   },
   {
     path: '/training/level-2/:id',
     name: 'level-2',
     component: Level_2,
+    props: true,
     meta: { requiresAuth: true },
   },
   {
     path: '/training/level-3/:id',
     name: 'level-3',
     component: Level_3,
+    props: true,
     meta: { requiresAuth: true },
   },
   {
     path: '/training/level-4/:id',
     name: 'level-4',
     component: Level_4,
+    props: true,
     meta: { requiresAuth: true },
   },
 ];
@@ -72,17 +76,32 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to) => {
+router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
+
+  if (userStore.loading) {
+    await userStore.initUser();
+  }
+
   const isLoggedIn = userStore.isLoggedIn;
   const requiresAuth = to.meta.requiresAuth;
 
-  if (requiresAuth && !isLoggedIn) {
-    return { name: 'readme' };
-  }
+  // if (requiresAuth && !isLoggedIn) {
+  //   return { name: 'readme' };
+  // }
 
-  if ((to.name === 'readme' || to.name === 'auth') && isLoggedIn) {
-    return { name: 'all-dialogs' };
+  // if ((to.name === 'readme' || to.name === 'auth') && isLoggedIn) {
+  //   return { name: 'all-dialogs' };
+  // }
+  if (requiresAuth && !isLoggedIn) {
+    // Неавторизованных пользователей на защищенных роутах отправляем на страницу входа
+    next({ name: 'auth' });
+  } else if (to.name === 'auth' && isLoggedIn) {
+    // Авторизованных пользователей не пускаем на страницу входа
+    next({ name: 'all-dialogs' });
+  } else {
+    // Во всех остальных случаях разрешаем переход
+    next();
   }
 });
 

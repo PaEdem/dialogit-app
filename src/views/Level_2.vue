@@ -1,65 +1,32 @@
 <template>
-  <div
-    v-if="dialog"
-    class="dialog-view level-view"
-  >
-    <div class="sidebar level-sidebar">
-      <div class="dialog-title">{{ dialog.title }}</div>
-      <div class="description">
-        Финский текст, русский перевод и финская речь.<br />Жми "Microphone" и проверь произношение.
-      </div>
-      <div class="controls">
-        <button
-          class="btn-control"
-          @click="repeatLevel"
-        >
-          <span class="material-symbols-outlined icon">repeat</span>
-        </button>
-        <button
-          class="btn-control"
-          @click="repeatLine"
-        >
-          <span class="material-symbols-outlined icon">repeat_one</span>
-        </button>
-        <button
-          class="btn-control play"
-          @click="nextLine"
-        >
-          <span class="material-symbols-outlined icon">play_arrow</span>
-        </button>
-        <button
-          class="btn-control mic"
-          @click="toogleMicrophone"
-          :class="micColor"
-        >
-          <span class="material-symbols-outlined icon">mic</span>
-        </button>
-        <router-link :to="{ name: 'view-dialog', params: { id: dialog.id } }">
-          <button class="btn-control">
-            <span class="material-symbols-outlined icon">fast_forward</span>
-          </button>
-        </router-link>
-      </div>
-      <div class="grow"></div>
-      <router-link
-        v-if="dialog"
-        to="/dialogs"
-        class="btn-menu"
+  <DialogLayout>
+    <template #sidebar-content>
+      <TrainingSidebar
+        :dialogId="props.id"
+        description='Финский текст, русский перевод и финская речь. Жми "Microphone" и говори. Повторно нажами на "Microphone" и проверь произношение.'
+        :mic-button="true"
       >
-        <span class="material-symbols-outlined icon">chat</span>
-        kaikki dialogit
-      </router-link>
-    </div>
-    <div
-      class="dialog-content column"
-      v-if="dialog"
-    >
+        <template #extra-controls>
+          <button
+            class="btn-control mic"
+            @click="trainingStore.toggleSpeechRecognition()"
+            :class="{ active: trainingStore.isMicActive }"
+            aria-label="Записать произношение"
+          >
+            <span class="material-symbols-outlined icon">{{ trainingStore.isMicActive ? 'mic' : 'mic_off' }}</span>
+            Микрофон {{ trainingStore.isMicActive ? 'ON' : 'OFF' }}
+          </button>
+        </template>
+      </TrainingSidebar>
+    </template>
+
+    <div class="content-wrapper">
       <div class="dialog-text-container">
         <div class="panel">
           <p
             class="finnish text"
-            v-for="(line, index) in dialog.fin.slice(0, lineIndex + 1)"
-            :key="index"
+            v-for="(line, index) in visibleLines.fin"
+            :key="`fin-${index}`"
           >
             {{ line }}
           </p>
@@ -67,217 +34,101 @@
         <div class="panel">
           <p
             class="russian text"
-            v-for="(line, index) in dialog.rus.slice(0, lineIndex + 1)"
-            :key="index"
+            v-for="(line, index) in visibleLines.rus"
+            :key="`rus-${index}`"
           >
             {{ line }}
           </p>
         </div>
       </div>
-      <div class="grow"></div>
       <div class="recognized-text-container">
-        <div
-          v-if="formattedRecognitionText"
+        <p
+          v-if="trainingStore.formattedRecognitionText"
           class="recognized-text"
-          v-html="formattedRecognitionText"
-        ></div>
+          v-html="trainingStore.formattedRecognitionText"
+        ></p>
+        <p
+          v-else
+          class="placeholder-text"
+        >
+          Нажмите на "Микрофон", чтобы проверить произношение...
+        </p>
       </div>
     </div>
-  </div>
+  </DialogLayout>
+
   <Teleport to="body">
-    <modal-end
-      :show="store.showModal"
-      @close="store.setShowModal(false)"
-    >
-      <template #header>
-        <h3 class="title">Dialogi on ohi</h3>
-      </template>
-    </modal-end>
+    <Modal>
+      <div class="ohi">
+        <h3 class="ohi-title">Harjoitus on ohi</h3>
+        <div class="ohi-message">
+          Hyvää työtä! Voit aloittaa alusta tai valita toisen harjoituksen.<br />
+          <br />
+          (Отличная работа! Можете начать заново или выбрать другую тренировку.)
+        </div>
+      </div>
+    </Modal>
   </Teleport>
 </template>
 
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { useStore } from '../stores/store';
-import ModalEnd from '../components/ModalEnd.vue';
+import { useDialogStore } from '../stores/dialogStore';
+import { useTrainingStore } from '../stores/trainingStore';
+import { useUiStore } from '../stores/uiStore';
+import DialogLayout from '../components/DialogLayout.vue';
+import TrainingSidebar from '../components/TrainingSidebar.vue';
+import Modal from '../components/Modal.vue';
 
-const route = useRoute();
-const store = useStore();
+const props = defineProps({ id: { type: String, required: true } });
+const dialogStore = useDialogStore();
+const trainingStore = useTrainingStore();
+const uiStore = useUiStore();
 
-const dialog = computed(() => store.currentDialog);
-const length = computed(() => (dialog.value ? dialog.value.fin.length : 0));
-const lineIndex = computed(() => store.currentLineIndex);
-const formattedRecognitionText = computed(() => store.formattedRecognitionText);
+const lineIndex = computed(() => trainingStore.currentLineIndex);
+const dialog = computed(() => dialogStore.currentDialog);
 
-const micColor = computed(() => {
-  if (store.isMicActive) {
-    return 'mic-color';
-  }
-  return '';
+const visibleLines = computed(() => {
+  if (!dialog.value) return { fin: [], rus: [] };
+  return {
+    fin: dialog.value.fin.slice(0, lineIndex.value + 1),
+    rus: dialog.value.rus.slice(0, lineIndex.value + 1),
+  };
 });
 
-onMounted(() => {
-  store.formattedRecognitionText = '';
-  const pathSegments = route.path.split('/');
-  const step = pathSegments[pathSegments.indexOf('training') + 1];
-  store.setStep(step);
-  store
-    .getDialogById(route.params.id)
-    .then(() => {
-      if (dialog.value) {
-        setTimeout(() => {
-          store.startLevel(dialog.value);
-        }, 1000);
-      } else {
-        console.error('Диалог не загружен');
-      }
-    })
-    .catch((error) => {
-      console.error('Ошибка при загрузке диалога:', error);
-    });
+onMounted(async () => {
+  trainingStore.setCurrentTrainingType('level-2');
+  await dialogStore.fetchDialogById(props.id);
+  if (dialogStore.currentDialog) {
+    trainingStore.startLevel();
+  }
 });
-const repeatLevel = () => {
-  if (dialog.value) {
-    store.recognitionResult = null;
-    store.formattedRecognitionText = '';
-    store.repeatLevel(dialog.value);
-  }
-};
-const repeatLine = () => {
-  if (dialog.value) {
-    store.recognitionResult = null;
-    store.formattedRecognitionText = '';
-    store.repeatLine(dialog.value);
-  }
-};
-const nextLine = () => {
-  if (dialog.value) {
-    store.recognitionResult = null;
-    store.formattedRecognitionText = '';
-    store.nextLine(dialog.value);
-  }
-  if (lineIndex.value > length.value) {
-    store.setShowModal(true);
-  }
-};
-const toogleMicrophone = () => {
-  if (dialog.value && dialog.value.fin[lineIndex.value]) {
-    store.toogleMic(dialog.value);
-  } else {
-    console.warn('Не удалось начать запись: нет доступной строки для сравнения.');
-  }
-};
 </script>
 
 <style scoped>
-.controls {
+.content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 0 30%;
-}
-.btn-control {
-  font-family: 'Roboto Condensed', sans-serif;
-  aspect-ratio: 1 / 1;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  border-radius: 1rem;
-  background: var(--text);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.btn-control .icon {
-  vertical-align: middle;
-  font-size: 3rem;
-  color: var(--pink);
-}
-.btn-control:hover {
-  background: var(--green);
-  color: var(--light);
-  transform: translateY(-4px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-.btn-control:hover .icon {
-  color: var(--light);
-}
-.btn-control.play {
-  background: var(--border);
-}
-.btn-control.play:hover {
-  background: var(--green);
-}
-.btn-control.mic {
-  background: var(--red);
-}
-.btn-control.mic:hover {
-  background: var(--accent);
-}
-.btn-control.mic:hover .icon {
-  color: var(--pink);
-}
-.btn-control.mic-color,
-.btn-control.mic-color .icon {
-  color: var(--yellow) !important;
-  transition: all 0.3s ease;
-}
-.level-view {
-  display: flex;
-  height: calc(100vh - 60px);
-}
-.column {
-  display: flex;
-  flex-direction: column;
-}
-.dialog-text-container {
-  display: flex;
-  width: 100%;
-  max-height: 100%;
-  overflow-y: auto;
-}
-.panel {
-  flex: 1;
-  padding: 0.75rem 2rem;
-  overflow-y: auto;
-}
-.text {
-  font-size: 1.1rem;
-  font-style: italic;
-  font-weight: 400;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--grey-b);
-  line-height: 1.5;
-}
-.finnish {
-  font-weight: 500;
-  color: var(--title);
-}
-.russian {
-  color: var(--subtitle);
+  height: 100%;
 }
 .recognized-text-container {
-  min-height: 70px;
-  padding: 0.5rem 1rem;
+  height: 80px; /* Фиксированная высота */
+  flex-shrink: 0; /* Не сжиматься */
+  padding: 1rem 2rem;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  background-color: var(--back);
-  border-top: 1px solid var(--grey-b);
-  border-bottom: 1px solid var(--grey-b);
+  border-top: 2px solid var(--tiffany-70);
 }
 .recognized-text {
-  font-size: 1.5rem;
+  font-size: var(--subtitle);
   font-weight: 500;
-  color: var(--title);
-  margin-top: 0.5rem;
-  margin-bottom: 1px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  color: var(--tiffany-20);
+  text-align: center;
 }
-.recognized-text span {
-  margin: 0 0.25rem;
+.placeholder-text {
+  font-size: var(--subtext);
+  font-style: italic;
+  color: var(--grey-50);
 }
 </style>

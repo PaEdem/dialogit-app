@@ -1,21 +1,22 @@
+<!-- \\src\views\Readme.vue -->
 <template>
   <div class="page">
     <div class="page-container">
       <div class="page-info">
-        <h2 class="page-info-subtitle">Диалоги для жизни</h2>
-        <h1 class="page-info-title">Учи финский с AI</h1>
-        <p class="page-info-description">
+        <div class="page-info-subtitle subtitle">Диалоги для жизни</div>
+        <div class="page-info-title title">Учи финский с AI</div>
+        <div class="page-info-text text">
           Создавайте персонализированные диалоги на финском, указывая уровень, тему и ключевые слова. Приложение — ваш
           личный наставник, который предлагает четыре уникальных режима тренировок: от простого ознакомления с текстом
           до отработки произношения и навыков перевода. Получайте мгновенную обратную связь, подробный грамматический и
           лексический анализ, адаптированный под ваш уровень.
-        </p>
+        </div>
         <router-link
           to="/auth"
           class="btn blue"
         >
           <span class="material-symbols-outlined icon">account_circle</span>
-          Kirjaudu sisään
+          Начать
         </router-link>
       </div>
       <div class="page-image">
@@ -39,7 +40,6 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: var(--pink);
 }
 .page-container {
   position: relative;
@@ -61,32 +61,15 @@
   padding-right: 0;
 }
 .page-info-subtitle {
-  font-family: 'Open Sans', sans-serif;
-  letter-spacing: 3px;
-  font-size: 1rem;
   width: 100%;
   text-align: right;
-  text-transform: uppercase;
-  color: var(--title);
-  font-weight: 700;
 }
 .page-info-title {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 3rem;
-  line-height: 3rem;
   margin: 3rem 0;
-  letter-spacing: 3px;
-  font-weight: 700;
-  color: var(--heading);
   text-align: center;
 }
-.page-info-description {
-  font-family: 'Open Sans', sans-serif;
-  font-style: italic;
+.page-info-text {
   margin: 2rem 0;
-  font-size: 1.25rem;
-  line-height: 2rem;
-  color: var(--subtitle);
   text-align: center;
 }
 .page-image {
@@ -117,7 +100,7 @@
     font-size: 2rem;
     line-height: 2rem;
   }
-  .page-info-description {
+  .page-info-text {
     font-size: 1rem;
     line-height: 1.5rem;
   }

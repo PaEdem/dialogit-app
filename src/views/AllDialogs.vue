@@ -1,169 +1,148 @@
 <!-- src\views\AllDialogs.vue -->
 <template>
-  <div class="all-dialogs-view">
-    <div class="sidebar">
-      <button
-        @click="createNewDialog"
-        class="btn accent"
+  <div class="layout">
+    <aside class="sidebar jc-sp-b">
+      <router-link
+        :to="{ name: 'new-dialog' }"
+        class="btn pink full"
       >
         <span class="material-symbols-outlined icon">add</span>
-        Luoda dialogi
-      </button>
-      <div class="box">
-        <div class="displayName">{{ displayName }}</div>
+        Создать диалог
+      </router-link>
+      <div class="user-box">
+        <div class="displayName">{{ userStore.user?.displayName || 'Käyttäjä' }}</div>
         <button
           @click="handleLogout"
-          class="btn-side"
+          class="btn grey full"
         >
           <span class="material-symbols-outlined icon">logout</span>
-          kirjaudu ulos
+          Выход
         </button>
       </div>
-    </div>
-    <div class="all-dialogs">
+    </aside>
+    <main class="content">
       <div
+        v-if="dialogs.length > 0"
         class="levels-group"
-        v-if="dialogs.length"
       >
-        <div
+        <template
           v-for="level in levels"
           :key="level"
-          class="level-group"
         >
-          <div class="dialogs-list">
+          <div
+            v-if="groupedDialogs[level].length > 0"
+            class="level-group"
+          >
             <DialogCard
               v-for="dialog in groupedDialogs[level]"
               :key="dialog.id"
               :dialog="dialog"
             />
           </div>
-        </div>
+        </template>
       </div>
       <div
-        class="message"
         v-else
+        class="message"
       >
-        <div class="message-text">Нет диалогов для обучения.</div>
-        <button
-          @click="createNewDialog"
+        <div class="message-text">Sinulla ei ole vielä dialogeja.</div>
+        <router-link
+          :to="{ name: 'new-dialog' }"
           class="btn accent message-btn"
         >
           <span class="material-symbols-outlined icon">add</span>
-          Luoda dialogi
-        </button>
+          Luo ensimmäinen dialogi
+        </router-link>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 
 <script setup>
 import { computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useStore } from '../stores/store';
-import { useUserStore } from '../stores/user';
+import { useDialogStore } from '../stores/dialogStore';
+import { useUserStore } from '../stores/userStore';
 import DialogCard from '../components/DialogCard.vue';
+import Loader from '../components/Loader.vue';
 
 const router = useRouter();
-const store = useStore();
+const dialogStore = useDialogStore();
 const userStore = useUserStore();
+
 const levels = ['A1', 'A2.1', 'A2.2', 'B1.1', 'B1.2', 'B2.1', 'B2.2', 'C1.1', 'C1.2'];
 
-const dialogs = computed(() => store.allDialogs);
-const displayName = computed(() => userStore.user?.displayName || '');
+const dialogs = computed(() => dialogStore.allDialogs);
 
-// Группируем диалоги по уровням
 const groupedDialogs = computed(() => {
   const groups = {};
   levels.forEach((level) => {
-    groups[level] = store.allDialogs.filter((d) => d.level === level);
+    groups[level] = dialogs.value.filter((d) => d.level === level);
   });
   return groups;
 });
 
 const handleLogout = async () => {
-  try {
-    await userStore.logout();
-    router.push({ name: 'readme' });
-  } catch (error) {
-    console.error('Ошибка выхода:', error.message);
-  }
+  await userStore.logout();
+  router.push({ name: 'auth' }); // После выхода - на страницу логина
 };
 
-const createNewDialog = () => {
-  if (!!dialogs.length) return;
-  router.push({ name: 'new-dialog' });
-};
-
-// Загружаем диалоги при загрузке компонента
 onMounted(() => {
-  store.getAllDialogsFromFS();
+  dialogStore.fetchAllDialogs();
 });
 </script>
 
 <style scoped>
-.all-dialogs-view {
-  position: relative;
-  display: flex;
-  gap: 1rem;
-  width: 80%;
-  height: 90vh;
-  margin: 0 auto;
-  margin-top: 5vh;
-}
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  width: 20%;
-  background: var(--subtitle);
-  border-radius: 0.5rem;
-  padding: 2rem 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-.box {
+.user-box {
   width: 100%;
+  text-align: center;
 }
 .displayName {
-  font-size: 1.25rem;
+  font-size: var(--text);
   font-weight: 300;
-  text-align: center;
-  color: var(--pink);
+  color: var(--winkle-20);
   margin-bottom: 1rem;
 }
-.all-dialogs {
-  flex: 1;
-  overflow-y: auto;
-  background: var(--back);
-  padding: 0.5rem 0 0 1rem;
+.levels-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
 }
 .level-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.level-title {
   margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--subtitle);
+  border-bottom: 1px solid var(--grey-b);
+  padding-bottom: 0.5rem;
 }
 .dialogs-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 .message {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem 0;
+  height: 100%;
+  text-align: center;
 }
 .message-text {
   font-size: 1.25rem;
-  font-style: italic;
-  font-weight: 500;
-  color: var(--title);
+  color: var(--subtitle);
+  margin-bottom: 2rem;
 }
 .message-btn {
   margin-top: 2rem;
-}
-@media (max-width: 1440px) {
-  .dialogs-list {
-    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
-  }
 }
 </style>
