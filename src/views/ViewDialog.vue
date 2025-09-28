@@ -107,7 +107,7 @@ const listenDialog = () => {
   trainingStore.playText(fullText);
 };
 const stopPlay = () => {
-  console.log('STOP PLAY');
+  trainingStore.stopSpeech();
 };
 const getInfo = async () => {
   await trainingStore.fetchDialogAnalysis();

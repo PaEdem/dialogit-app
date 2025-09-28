@@ -37,6 +37,7 @@ export const useTrainingStore = defineStore('training', {
     },
     // --- Training Flow ---
     startLevel() {
+      this.stopSpeech();
       this.currentLineIndex = 0;
       this.resetLineState();
       if (this.currentTrainingType !== 'level-3') {
@@ -44,6 +45,7 @@ export const useTrainingStore = defineStore('training', {
       }
     },
     nextLine() {
+      this.stopSpeech();
       const dialogStore = useDialogStore();
       if (this.currentLineIndex < dialogStore.currentDialog.fin.length - 1) {
         this.currentLineIndex++;
@@ -57,6 +59,7 @@ export const useTrainingStore = defineStore('training', {
       }
     },
     repeatLevel() {
+      this.stopSpeech();
       this.startLevel();
     },
     resetLineState() {
@@ -82,14 +85,15 @@ export const useTrainingStore = defineStore('training', {
      */
     playText(text) {
       if (!text) return;
-      // Останавливаем предыдущее воспроизведение, если оно есть
-      speechSynthesis.cancel();
+      this.stopSpeech();
 
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'fi-FI';
       speechSynthesis.speak(utterance);
     },
-
+    stopSpeech() {
+      speechSynthesis.cancel();
+    },
     // ACTION ДЛЯ МИКРОФОНА
     toggleSpeechRecognition() {
       if (this.recognition) {
