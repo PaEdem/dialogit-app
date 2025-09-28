@@ -16,7 +16,7 @@
           class="btn blue"
         >
           <span class="material-symbols-outlined icon">account_circle</span>
-          Kirjaudu sisään
+          Начать
         </router-link>
       </div>
       <div class="page-image">

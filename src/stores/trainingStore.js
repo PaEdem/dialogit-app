@@ -3,14 +3,17 @@ import { defineStore } from 'pinia';
 import { marked } from 'marked';
 import { useDialogStore } from './dialogStore';
 import { useUiStore } from './uiStore';
-import { fetchGeminiResponse } from '../services/geminiService'; // Наш новый сервис
+import { compareAndFormatTexts } from '../utils/compareTexts';
+import { fetchGeminiResponse } from '../services/geminiService';
 
 export const useTrainingStore = defineStore('training', {
   state: () => ({
+    currentTrainingType: '',
     currentLineIndex: 0,
     recognition: null,
     isMicActive: false,
     recognitionText: '',
+    formattedRecognitionText: '',
     geminiResult: '',
     isLoading: false,
   }),
@@ -29,18 +32,25 @@ export const useTrainingStore = defineStore('training', {
     },
   },
   actions: {
+    setCurrentTrainingType(type) {
+      this.currentTrainingType = type;
+    },
     // --- Training Flow ---
     startLevel() {
       this.currentLineIndex = 0;
       this.resetLineState();
-      setTimeout(() => this.playCurrentLineAudio(), 1000);
+      if (this.currentTrainingType !== 'level-3') {
+        setTimeout(() => this.playCurrentLineAudio(), 1000);
+      }
     },
     nextLine() {
       const dialogStore = useDialogStore();
       if (this.currentLineIndex < dialogStore.currentDialog.fin.length - 1) {
         this.currentLineIndex++;
         this.resetLineState();
-        this.playCurrentLineAudio();
+        if (this.currentTrainingType !== 'level-3') {
+          this.playCurrentLineAudio();
+        }
       } else {
         const uiStore = useUiStore();
         uiStore.showModal();
@@ -51,6 +61,7 @@ export const useTrainingStore = defineStore('training', {
     },
     resetLineState() {
       this.recognitionText = '';
+      this.formattedRecognitionText = '';
       this.geminiResult = '';
     },
 
@@ -81,7 +92,6 @@ export const useTrainingStore = defineStore('training', {
 
     // ACTION ДЛЯ МИКРОФОНА
     toggleSpeechRecognition() {
-      // Если распознавание уже активно, останавливаем его
       if (this.recognition) {
         this.recognition.stop();
         return;
@@ -101,9 +111,13 @@ export const useTrainingStore = defineStore('training', {
       const rusText = currentDialog.rus[this.currentLineIndex];
       const level = currentDialog.level;
 
+      this.recognitionText = '';
+      this.formattedRecognitionText = '';
+      this.geminiResult = '';
+
       this.recognition = new SpeechRecognition();
       this.recognition.lang = 'fi-FI';
-      this.recognition.continuous = false; // Лучше false, чтобы он останавливался после первой фразы
+      this.recognition.continuous = true;
       this.recognition.interimResults = false;
 
       this.recognition.onstart = () => {
@@ -115,9 +129,12 @@ export const useTrainingStore = defineStore('training', {
         const transcript = event.results[0][0].transcript;
         this.recognitionText = transcript;
 
-        // Сразу после получения результата можно запустить проверку
-        // Это опционально, но делает процесс более гладким
-        this.checkUserTranslation(rusText, finText, level);
+        if (this.currentTrainingType === 'level-2') {
+          const { formattedText } = compareAndFormatTexts(finText, transcript);
+          this.formattedRecognitionText = formattedText;
+        } else if (this.currentTrainingType === 'level-3') {
+          this.checkUserTranslation(rusText, finText, level);
+        }
       };
 
       this.recognition.onerror = (event) => {
@@ -170,26 +187,6 @@ export const useTrainingStore = defineStore('training', {
       } catch (error) {
         console.error('Ошибка получения анализа диалога:', error);
         this.geminiResult = '<p>Не удалось загрузить анализ. Попробуйте еще раз.</p>';
-      } finally {
-        this.isLoading = false;
-      }
-    },
-
-    /**
-     * Запускает проверку перевода пользователя через AI.
-     * @param {string} rusText - Оригинальный русский текст.
-     * @param {string} finText - Правильный финский текст.
-     * @param {string} level - Уровень сложности.
-     */
-    async checkUserTranslation(rusText, finText, level) {
-      this.isLoading = true;
-      this.geminiResult = '';
-      try {
-        const prompt = this.getPromptForTranslation(rusText, finText, level);
-        this.geminiResult = await fetchGeminiResponse(prompt);
-      } catch (error) {
-        console.error('Ошибка проверки перевода:', error);
-        this.geminiResult = 'Не удалось проверить перевод. Попробуйте еще раз.';
       } finally {
         this.isLoading = false;
       }
@@ -254,6 +251,26 @@ export const useTrainingStore = defineStore('training', {
         Format the output strictly using Markdown headings and bullet points for readability.
         Dialogue: ${fullDialogText}
       `;
+    },
+
+    /**
+     * Запускает проверку перевода пользователя через AI.
+     * @param {string} rusText - Оригинальный русский текст.
+     * @param {string} finText - Правильный финский текст.
+     * @param {string} level - Уровень сложности.
+     */
+    async checkUserTranslation(rusText, finText, level) {
+      this.isLoading = true;
+      this.geminiResult = '';
+      try {
+        const prompt = this.getPromptForTranslation(rusText, finText, level);
+        this.geminiResult = await fetchGeminiResponse(prompt);
+      } catch (error) {
+        console.error('Ошибка проверки перевода:', error);
+        this.geminiResult = 'Не удалось проверить перевод. Попробуйте еще раз.';
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
 });

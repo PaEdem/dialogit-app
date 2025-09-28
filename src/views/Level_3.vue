@@ -3,7 +3,7 @@
     <template #sidebar-content>
       <TrainingSidebar
         :dialogId="props.id"
-        description="Русский перевод. Жми 'Microphone' и проверь правильность фразы на финском."
+        description='Русский перевод. Жми "Microphone" и говори. Повторно нажами на "Microphone" и проверь правильность фразы на финском.'
         :mic-button="true"
       >
         <template #extra-controls>
@@ -11,9 +11,10 @@
             class="btn-control mic"
             @click="trainingStore.toggleSpeechRecognition()"
             :class="{ active: trainingStore.isMicActive }"
-            aria-label="Записать произношение"
+            aria-label="Записать перевод"
           >
-            <span class="material-symbols-outlined icon">mic</span>
+            <span class="material-symbols-outlined icon">{{ trainingStore.isMicActive ? 'mic' : 'mic_off' }}</span>
+            Микрофон {{ trainingStore.isMicActive ? 'ON' : 'OFF' }}
           </button>
         </template>
       </TrainingSidebar>
@@ -51,14 +52,23 @@
           v-else
           class="placeholder-text"
         >
-          Нажмите на микрофон, чтобы проверить свой перевод...
+          Нажмите на "Микрофон", чтобы проверить свой перевод...
         </p>
       </div>
     </div>
   </DialogLayout>
 
   <Teleport to="body">
-    <Modal> </Modal>
+    <Modal>
+      <div class="ohi">
+        <h3 class="ohi-title">Harjoitus on ohi</h3>
+        <div class="ohi-message">
+          Hyvää työtä! Voit aloittaa alusta tai valita toisen harjoituksen.<br />
+          <br />
+          (Отличная работа! Можете начать заново или выбрать другую тренировку.)
+        </div>
+      </div>
+    </Modal>
   </Teleport>
 </template>
 
@@ -66,7 +76,6 @@
 import { computed, onMounted } from 'vue';
 import { useDialogStore } from '../stores/dialogStore';
 import { useTrainingStore } from '../stores/trainingStore';
-import { useUiStore } from '../stores/uiStore';
 import DialogLayout from '../components/DialogLayout.vue';
 import TrainingSidebar from '../components/TrainingSidebar.vue';
 import Modal from '../components/Modal.vue';
@@ -74,7 +83,6 @@ import Modal from '../components/Modal.vue';
 const props = defineProps({ id: { type: String, required: true } });
 const dialogStore = useDialogStore();
 const trainingStore = useTrainingStore();
-const uiStore = useUiStore();
 
 const lineIndex = computed(() => trainingStore.currentLineIndex);
 const dialog = computed(() => dialogStore.currentDialog);
@@ -82,14 +90,13 @@ const dialog = computed(() => dialogStore.currentDialog);
 const visibleLines = computed(() => {
   if (!dialog.value) return { fin: [], rus: [] };
   return {
-    // Для Level 3 показываем финский перевод предыдущих строк
     fin: dialog.value.fin.slice(0, lineIndex.value),
-    // А русскую подсказку - для текущей
     rus: dialog.value.rus.slice(0, lineIndex.value + 1),
   };
 });
 
 onMounted(async () => {
+  trainingStore.setCurrentTrainingType('level-3');
   await dialogStore.fetchDialogById(props.id);
   if (dialogStore.currentDialog) {
     trainingStore.startLevel();
@@ -98,69 +105,35 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.btn-control.mic {
-  background: var(--red);
-}
-.btn-control.mic:hover {
-  background: var(--accent);
-}
-/* Стиль для активного состояния */
-.btn-control.mic.active {
-  background-color: var(--yellow);
-  color: var(--title);
-}
-.btn-control.mic.active:hover {
-  background-color: var(--yellow);
-  opacity: 0.8;
-}
 .content-wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
-.dialog-text-container {
-  display: flex;
-  flex-grow: 1;
-  overflow-y: auto;
-}
-.panel {
-  flex: 1;
-  padding: 0 2rem;
-}
-.text {
-  font-size: 1.1rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--grey-b);
-  line-height: 1.5;
-}
-.finnish {
-  font-weight: 500;
-  color: var(--title);
-}
-.russian {
-  font-style: italic;
-  color: var(--subtitle);
-}
-
 .recognized-text-container {
   height: 80px;
-  flex-shrink: 0;
+  flex-shrink: 0; /* Не сжиматься */
+  overflow-y: auto;
   padding: 1rem 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--back);
-  border-top: 1px solid var(--grey-b);
+  border-top: 2px solid var(--tiffany-70);
+}
+.recognized-text {
+  font-size: var(--subtitle);
+  font-weight: 500;
+  color: var(--tiffany-20);
   text-align: center;
 }
-.gemini-result {
-  font-size: 1.2rem;
-  font-style: italic;
-  color: var(--title);
-}
 .placeholder-text {
-  font-size: 1rem;
+  font-size: var(--subtext);
   font-style: italic;
-  color: var(--subtitle);
+  color: var(--grey-50);
+}
+.gemini-result {
+  font-size: var(--text);
+  font-style: italic;
+  color: var(--red-20);
 }
 </style>

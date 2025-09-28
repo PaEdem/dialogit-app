@@ -62,14 +62,6 @@ const uiStore = useUiStore();
   overflow-y: auto;
   padding: 0 0.5rem 0 1rem;
 }
-.modal-info h3 {
-  margin: 0;
-  font-size: var(--subtitle);
-  font-weight: 500;
-  text-align: center;
-  padding: 0.5rem 0;
-  color: var(--red-20);
-}
 .modal-info ul {
   padding: 0.5rem 0 1rem;
 }
@@ -101,8 +93,8 @@ const uiStore = useUiStore();
 }
 .ohi-title {
   font-size: var(--title);
+  padding-top: 2rem;
   text-align: center;
-  padding: 2rem;
   margin: 0 auto;
   color: var(--red-20);
 }
@@ -115,7 +107,7 @@ const uiStore = useUiStore();
 }
 .modal-footer {
   display: flex;
-  padding: 0.5rem 2rem;
+  padding: 0 2rem;
 }
 .modal-enter-from {
   opacity: 0;

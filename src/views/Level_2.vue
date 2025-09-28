@@ -43,9 +43,16 @@
       </div>
       <div class="recognized-text-container">
         <p
+          v-if="trainingStore.formattedRecognitionText"
           class="recognized-text"
-          v-html="trainingStore.recognitionText"
+          v-html="trainingStore.formattedRecognitionText"
         ></p>
+        <p
+          v-else
+          class="placeholder-text"
+        >
+          Нажмите на "Микрофон", чтобы проверить произношение...
+        </p>
       </div>
     </div>
   </DialogLayout>
@@ -90,6 +97,7 @@ const visibleLines = computed(() => {
 });
 
 onMounted(async () => {
+  trainingStore.setCurrentTrainingType('level-2');
   await dialogStore.fetchDialogById(props.id);
   if (dialogStore.currentDialog) {
     trainingStore.startLevel();
@@ -113,9 +121,14 @@ onMounted(async () => {
   border-top: 2px solid var(--tiffany-70);
 }
 .recognized-text {
-  font-size: var(--text);
+  font-size: var(--subtitle);
   font-weight: 500;
-  color: var(--tiffany-10);
+  color: var(--tiffany-20);
   text-align: center;
+}
+.placeholder-text {
+  font-size: var(--subtext);
+  font-style: italic;
+  color: var(--grey-50);
 }
 </style>

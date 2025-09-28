@@ -7,7 +7,7 @@
         class="btn pink full"
       >
         <span class="material-symbols-outlined icon">add</span>
-        Luo uusi dialogi
+        Создать диалог
       </router-link>
       <div class="user-box">
         <div class="displayName">{{ userStore.user?.displayName || 'Käyttäjä' }}</div>
@@ -16,7 +16,7 @@
           class="btn grey full"
         >
           <span class="material-symbols-outlined icon">logout</span>
-          Kirjaudu ulos
+          Выход
         </button>
       </div>
     </aside>
