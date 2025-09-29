@@ -42,7 +42,8 @@
         <h3 class="ohi-title">Harjoitus on ohi</h3>
         <div class="ohi-message">
           Hyvää työtä! Voit aloittaa alusta tai valita toisen harjoituksen.<br />
-          (Отличная работа! Можете начать заново или выбрать другую тренировку.)
+          <br />
+          Отличная работа! Можете начать заново или выбрать другую тренировку.
         </div>
       </div>
     </Modal>
@@ -109,12 +110,12 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  width: 80%;
-  max-width: 900px;
+  width: 90%;
+  max-width: 960px;
 }
 .btn-quiz {
   font-family: 'Roboto Condensed', sans-serif;
-  height: 120px; /* Фиксированная высота для единообразия */
+  height: 160px; /* Фиксированная высота для единообразия */
   padding: 1rem;
   display: flex;
   justify-content: center;

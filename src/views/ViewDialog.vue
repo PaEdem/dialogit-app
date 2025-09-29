@@ -126,6 +126,7 @@ const getInfo = async () => {
 .dialog-level {
   margin-left: auto;
   letter-spacing: 3px;
+  font-weight: 400;
   font-size: var(--subtitle);
   color: var(--tiffany-20);
 }

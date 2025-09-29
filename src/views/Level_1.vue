@@ -44,7 +44,8 @@
         <h3 class="ohi-title">Harjoitus on ohi</h3>
         <div class="ohi-message">
           Hyvää työtä! Voit aloittaa alusta tai valita toisen harjoituksen.<br />
-          (Отличная работа! Можете начать заново или выбрать другую тренировку.)
+          <br />
+          Отличная работа! Можете начать заново или выбрать другую тренировку.
         </div>
       </div>
     </Modal>

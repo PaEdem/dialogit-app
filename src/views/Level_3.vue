@@ -65,7 +65,7 @@
         <div class="ohi-message">
           Hyvää työtä! Voit aloittaa alusta tai valita toisen harjoituksen.<br />
           <br />
-          (Отличная работа! Можете начать заново или выбрать другую тренировку.)
+          Отличная работа! Можете начать заново или выбрать другую тренировку.
         </div>
       </div>
     </Modal>
