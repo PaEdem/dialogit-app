@@ -18,6 +18,13 @@
   border: 1px solid var(--grey-50);
   cursor: not-allowed;
 }
+.btn-control.mic.off,
+.btn-control.mic.off:hover {
+  background-color: var(--grey-60);
+  color: var(--grey-50);
+  border: 1px solid var(--grey-50);
+  cursor: not-allowed;
+}
 .btn .icon {
   vertical-align: middle;
   margin-right: 0.5rem;
@@ -48,8 +55,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
 .btn.pink {
-  background-color: var(--red-60);
-  color: var(--red-30);
+  background-color: var(--red-30);
+  color: var(--red-80);
   border: 1px solid var(--red-30);
   transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 }

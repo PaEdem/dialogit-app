@@ -48,7 +48,7 @@
         <div class="message-text">Sinulla ei ole vielä dialogeja.</div>
         <router-link
           :to="{ name: 'new-dialog' }"
-          class="btn accent message-btn"
+          class="btn pink"
         >
           <span class="material-symbols-outlined icon">add</span>
           Luo ensimmäinen dialogi
@@ -109,14 +109,11 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 1rem;
 }
 .level-group {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
+  margin: 0 -8px;
 }
 .level-title {
   margin-bottom: 1rem;
@@ -140,11 +137,8 @@ onMounted(() => {
   text-align: center;
 }
 .message-text {
-  font-size: 1.25rem;
-  color: var(--subtitle);
+  font-size: var(--title);
+  color: var(--red-20);
   margin-bottom: 2rem;
-}
-.message-btn {
-  margin-top: 2rem;
 }
 </style>

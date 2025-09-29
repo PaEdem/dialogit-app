@@ -26,9 +26,9 @@ const props = defineProps({
 
 <style scoped>
 .dialog-card {
-  flex: 0 1 30%;
-  min-width: 320px;
-  display: block;
+  flex: 0 1 400px;
+  min-width: 450px;
+  margin: 8px;
   background-color: var(--winkle-90);
   border: 1px solid var(--winkle-80);
   border-radius: 0.5rem;

@@ -48,7 +48,10 @@
         Удалить диалог
       </button>
     </template>
-    <div class="subtitle ta-c">{{ dialog.title }}</div>
+    <div class="dialog-title">
+      <div class="subtitle ml-a ta-c">{{ dialog.title }}</div>
+      <div class="dialog-level">{{ dialog.level }}</div>
+    </div>
     <div class="scroll-container">
       <div
         v-for="(fin, index) in dialogStore.currentDialog.fin"
@@ -116,6 +119,19 @@ const getInfo = async () => {
 </script>
 
 <style scoped>
+.dialog-title {
+  display: flex;
+  justify-content: center;
+}
+.dialog-level {
+  margin-left: auto;
+  letter-spacing: 3px;
+  font-size: var(--subtitle);
+  color: var(--tiffany-20);
+}
+.ml-a {
+  margin-left: auto;
+}
 .play {
   display: grid;
   grid-template-columns: 5fr 1fr;
