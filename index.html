@@ -17,9 +17,46 @@
       content="width=device-width, initial-scale=1.0"
     />
     <title>Dialogit</title>
+    <style>
+      .preloader-wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ebadad;
+      }
+      .loader {
+        font-size: 48px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        font-family: 'Roboto Condensed', Arial, Helvetica, sans-serif;
+        color: #1f4747;
+        animation: smokeOut 1s ease-in-out infinite alternate;
+        text-shadow: 0 0 1px #0f2424;
+      }
+      .loader:before {
+        content: 'Loading';
+      }
+
+      @keyframes smokeOut {
+        100% {
+          opacity: 0.08;
+          filter: blur(5px);
+          letter-spacing: 4px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <div class="preloader-wrap">
+        <span class="preloader"></span>
+      </div>
+    </div>
     <script
       type="module"
       src="/src/main.js"
