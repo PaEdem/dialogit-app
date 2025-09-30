@@ -22,6 +22,7 @@
   /* YELLOW */
   --yellow: hsl(60, 100%, 50%);
   /* GREEN */
+  --tiffany-10: rgb(15, 36, 36);
   --tiffany-10: hsl(180, 40%, 10%);
   --tiffany-20: hsl(180, 40%, 20%);
   --tiffany-30: hsl(180, 40%, 30%);

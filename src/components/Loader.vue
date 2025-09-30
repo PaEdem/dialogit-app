@@ -31,12 +31,16 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(21, 54, 54, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 .ml-loader {
   position: relative;
-  width: 200px;
-  height: 200px;
+  transform: translateY(-50%);
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
 }
 .ml-loader div {
   transform-origin: 100px 100px;
@@ -46,9 +50,9 @@
   content: '';
   display: block;
   position: absolute;
-  top: 200px;
-  left: 95px;
-  width: 10px;
+  top: 180px;
+  left: 89px;
+  width: 16px;
   height: 50px;
   border-radius: 10px;
   background-color: var(--tiffany-50);

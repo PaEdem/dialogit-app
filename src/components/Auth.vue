@@ -40,18 +40,17 @@
       </form>
 
       <div class="divider"><span>tai</span></div>
-
       <button
         @click="handleGoogleSignIn"
-        class="btn green google-btn"
+        class="btn green provider-btn"
         :disabled="isLoading"
       >
         <img
-          class="icon google-icon"
+          class="icon provider-icon"
           src="../assets/google.svg"
           alt="Google icon"
         />
-        Googlella
+        Google
       </button>
 
       <p class="toggle-mode">
@@ -102,7 +101,6 @@ const handleSubmit = async () => {
     isLoading.value = false;
   }
 };
-
 const handleGoogleSignIn = async () => {
   isLoading.value = true;
   errorMessage.value = '';
@@ -115,12 +113,10 @@ const handleGoogleSignIn = async () => {
     isLoading.value = false;
   }
 };
-
 const toggleMode = () => {
   mode.value = isLoginMode.value ? 'signup' : 'login';
   errorMessage.value = '';
 };
-
 // ✨ УТИЛИТА ДЛЯ ПРЕОБРАЗОВАНИЯ ОШИБОК FIREBASE
 function getFriendlyErrorMessage(errorCode) {
   switch (errorCode) {
@@ -150,9 +146,9 @@ function getFriendlyErrorMessage(errorCode) {
   margin-bottom: 2rem;
 }
 .form {
-  min-width: 25%;
+  min-width: 30%;
   background: var(--tiffany-90);
-  padding: 2rem;
+  padding: 2rem 1.5rem;
   border-radius: 0.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
@@ -164,16 +160,9 @@ input {
   border: 1px solid var(--tiffany-80);
   border-radius: 4px;
 }
-.google-btn {
-  width: 100%;
-  margin-top: 0;
-}
 .auth-btn {
   width: 100%;
   margin-top: 1.5rem;
-}
-.google-icon {
-  width: 18px;
 }
 .divider {
   margin: 1.5rem 0;
@@ -197,6 +186,13 @@ input {
   height: 1px;
   background-color: var(--tiffany-20);
   z-index: 0;
+}
+.provider-btn {
+  width: 100%;
+  margin-top: 0;
+}
+.provider-icon {
+  width: 18px;
 }
 .toggle-mode {
   margin-top: 2rem;
