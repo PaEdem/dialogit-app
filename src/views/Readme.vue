@@ -4,7 +4,7 @@
     <div class="page-container">
       <div class="page-info">
         <div class="page-info-subtitle subtitle">Диалоги для жизни</div>
-        <div class="page-info-title title">Учи финский с AI</div>
+        <div class="page-info-title title">Финский с AI</div>
         <div class="page-info-text text">
           Создавайте персонализированные диалоги на финском, указывая уровень, тему и ключевые слова. Приложение — ваш
           личный наставник, который предлагает четыре уникальных режима тренировок: от простого ознакомления с текстом
